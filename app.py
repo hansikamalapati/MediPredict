@@ -1,13 +1,16 @@
+import os
+
 from flask import Flask, render_template
 from database import get_connection
+from ml.predict_demand import predict_medicine_demand
 
 
 app = Flask(__name__)
 
 
-# =========================================================
-# FUNCTION: GET MEDICINE PREDICTIONS
-# =========================================================
+# ============================================================
+# GET MEDICINE PREDICTIONS
+# ============================================================
 
 def get_medicine_predictions():
 
@@ -40,47 +43,61 @@ def get_medicine_predictions():
 
     for medicine in medicines:
 
-        medicine_id = medicine["id"]
-
-
-        # ---------------------------------------------
-        # Get last 30 days of usage
-        # ---------------------------------------------
-
+        # Get recent usage history
         cursor.execute("""
             SELECT quantity_used
             FROM usage_history
             WHERE medicine_id = ?
             ORDER BY usage_date DESC
             LIMIT 30
-        """, (medicine_id,))
+        """, (medicine["id"],))
 
         usage_records = cursor.fetchall()
 
+        # ----------------------------------------------------
+        # ML PREDICTION
+        # ----------------------------------------------------
 
-        # ---------------------------------------------
-        # Calculate average daily usage
-        # ---------------------------------------------
+        try:
 
-        if usage_records:
-
-            total_usage = sum(
-                row["quantity_used"]
-                for row in usage_records
+            predicted_usage = predict_medicine_demand(
+                medicine["id"]
             )
 
-            average_usage = (
-                total_usage / len(usage_records)
+            if predicted_usage is not None and predicted_usage > 0:
+
+                average_usage = predicted_usage
+
+            else:
+
+                average_usage = medicine["daily_usage"]
+
+        except Exception as error:
+
+            print(
+                f"ML prediction error for "
+                f"{medicine['name']}: {error}"
             )
 
-        else:
+            # Fallback to historical average
+            if usage_records:
 
-            average_usage = medicine["daily_usage"]
+                total_usage = sum(
+                    row["quantity_used"]
+                    for row in usage_records
+                )
 
+                average_usage = (
+                    total_usage / len(usage_records)
+                )
 
-        # ---------------------------------------------
-        # Calculate days remaining
-        # ---------------------------------------------
+            else:
+
+                average_usage = medicine["daily_usage"]
+
+        # ----------------------------------------------------
+        # STOCKOUT CALCULATION
+        # ----------------------------------------------------
 
         if average_usage > 0:
 
@@ -93,49 +110,32 @@ def get_medicine_predictions():
 
             days_remaining = 999
 
-
-        # ---------------------------------------------
-        # Calculate demand during delivery time
-        # ---------------------------------------------
+        # ----------------------------------------------------
+        # REORDER CALCULATION
+        # ----------------------------------------------------
 
         delivery_demand = (
-            average_usage * medicine["lead_time"]
+            average_usage
+            * medicine["lead_time"]
         )
 
-
-        # ---------------------------------------------
-        # Safety stock
-        # We keep 7 days of extra stock
-        # ---------------------------------------------
-
-        safety_stock = (
-            average_usage * 7
-        )
-
-
-        # ---------------------------------------------
-        # Recommended stock
-        # ---------------------------------------------
+        # Keep 7 days as safety stock
+        safety_stock = average_usage * 7
 
         recommended_stock = (
-            delivery_demand + safety_stock
+            delivery_demand
+            + safety_stock
         )
-
-
-        # ---------------------------------------------
-        # Recommended reorder quantity
-        # ---------------------------------------------
 
         reorder_quantity = max(
             0,
-            recommended_stock -
-            medicine["current_stock"]
+            recommended_stock
+            - medicine["current_stock"]
         )
 
-
-        # ---------------------------------------------
-        # Calculate stockout risk
-        # ---------------------------------------------
+        # ----------------------------------------------------
+        # RISK LEVEL
+        # ----------------------------------------------------
 
         if days_remaining <= medicine["lead_time"]:
 
@@ -151,88 +151,72 @@ def get_medicine_predictions():
 
             risk = "LOW"
 
-
-        # ---------------------------------------------
-        # Store result
-        # ---------------------------------------------
+        # ----------------------------------------------------
+        # STORE RESULT
+        # ----------------------------------------------------
 
         results.append({
 
-            "id":
-                medicine["id"],
+            "id": medicine["id"],
 
-            "name":
-                medicine["name"],
+            "name": medicine["name"],
 
-            "current_stock":
-                medicine["current_stock"],
+            "current_stock": medicine["current_stock"],
 
-            "minimum_stock":
-                medicine["minimum_stock"],
+            "minimum_stock": medicine["minimum_stock"],
 
-            "supplier":
-                medicine["supplier"],
+            "supplier": medicine["supplier"],
 
-            "lead_time":
-                medicine["lead_time"],
+            "lead_time": medicine["lead_time"],
 
-            "daily_usage":
-                medicine["daily_usage"],
+            "daily_usage": medicine["daily_usage"],
 
-            "average_usage":
-                round(average_usage, 1),
+            # ML predicted daily demand
+            "average_usage": round(
+                average_usage,
+                1
+            ),
 
-            "days_remaining":
-                round(days_remaining, 1),
+            "days_remaining": round(
+                days_remaining,
+                1
+            ),
 
-            "risk":
-                risk,
+            "risk": risk,
 
-            "reorder_quantity":
-                round(reorder_quantity),
+            "reorder_quantity": round(
+                reorder_quantity
+            ),
 
-            "category":
-                medicine["category"],
+            "category": medicine["category"],
 
-            "dosage_form":
-                medicine["dosage_form"],
+            "dosage_form": medicine["dosage_form"],
 
-            "strength":
-                medicine["strength"],
+            "strength": medicine["strength"],
 
-            "maximum_stock":
-                medicine["maximum_stock"],
+            "maximum_stock": medicine["maximum_stock"],
 
-            "unit_price":
-                medicine["unit_price"],
+            "unit_price": medicine["unit_price"],
 
-            "expiry_date":
-                medicine["expiry_date"],
+            "expiry_date": medicine["expiry_date"],
 
-            "last_restocked":
-                medicine["last_restocked"]
+            "last_restocked": medicine["last_restocked"]
 
         })
-
 
     connection.close()
 
     return results
 
 
-# =========================================================
+# ============================================================
 # DASHBOARD
-# =========================================================
+# ============================================================
 
 @app.route("/")
 def dashboard():
 
     medicines = get_medicine_predictions()
-
-
-    # ---------------------------------------------
-    # Calculate statistics
-    # ---------------------------------------------
 
     total_medicines = len(medicines)
 
@@ -254,25 +238,19 @@ def dashboard():
         if medicine["risk"] == "LOW"
     )
 
-
     return render_template(
         "index.html",
-
         medicines=medicines,
-
         total_medicines=total_medicines,
-
         high_risk=high_risk,
-
         medium_risk=medium_risk,
-
         low_risk=low_risk
     )
 
 
-# =========================================================
+# ============================================================
 # MEDICINES PAGE
-# =========================================================
+# ============================================================
 
 @app.route("/medicines")
 def medicines_page():
@@ -285,19 +263,14 @@ def medicines_page():
     )
 
 
-# =========================================================
+# ============================================================
 # PREDICTIONS PAGE
-# =========================================================
+# ============================================================
 
 @app.route("/predictions")
 def predictions():
 
     medicines = get_medicine_predictions()
-
-
-    # ---------------------------------------------
-    # Calculate statistics
-    # ---------------------------------------------
 
     total_medicines = len(medicines)
 
@@ -319,24 +292,19 @@ def predictions():
         if medicine["risk"] == "LOW"
     )
 
-
     return render_template(
         "predictions.html",
-
         medicines=medicines,
-
         total_medicines=total_medicines,
-
         high_risk=high_risk,
-
         medium_risk=medium_risk,
-
         low_risk=low_risk
     )
 
-# =========================================================
+
+# ============================================================
 # ANALYTICS PAGE
-# =========================================================
+# ============================================================
 
 @app.route("/analytics")
 def analytics():
@@ -372,17 +340,15 @@ def analytics():
         low_risk=low_risk
     )
 
-# =========================================================
+
+# ============================================================
 # ALERTS PAGE
-# =========================================================
+# ============================================================
 
 @app.route("/alerts")
 def alerts():
 
     medicines = get_medicine_predictions()
-
-
-    # Calculate statistics
 
     total_medicines = len(medicines)
 
@@ -404,26 +370,101 @@ def alerts():
         if medicine["risk"] == "LOW"
     )
 
-
     return render_template(
         "alerts.html",
-
         medicines=medicines,
-
         total_medicines=total_medicines,
-
         high_risk=high_risk,
-
         medium_risk=medium_risk,
-
         low_risk=low_risk
     )
-# =========================================================
+
+
+# ============================================================
+# ML PREDICTION API
+# ============================================================
+
+@app.route("/api/predict/<int:medicine_id>")
+def api_predict(medicine_id):
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            name,
+            current_stock
+        FROM medicines
+        WHERE id = ?
+    """, (medicine_id,))
+
+    medicine = cursor.fetchone()
+
+    connection.close()
+
+    # Medicine not found
+    if medicine is None:
+
+        return {
+            "success": False,
+            "message": "Medicine not found"
+        }, 404
+
+    try:
+
+        predicted_demand = predict_medicine_demand(
+            medicine_id
+        )
+
+        return {
+
+            "success": True,
+
+            "medicine_id": medicine["id"],
+
+            "medicine_name": medicine["name"],
+
+            "current_stock": medicine["current_stock"],
+
+            "predicted_daily_demand": predicted_demand
+
+        }
+
+    except Exception as error:
+
+        return {
+
+            "success": False,
+
+            "message": str(error)
+
+        }, 500
+
+
+# ============================================================
 # RUN APPLICATION
-# =========================================================
+# GOOGLE CLOUD RUN READY
+# ============================================================
 
 if __name__ == "__main__":
 
+    # Cloud Run provides the PORT environment variable.
+    # Locally, it will use port 5000.
+
+    port = int(
+        os.environ.get(
+            "PORT",
+            5000
+        )
+    )
+
     app.run(
-        debug=True
+
+        host="0.0.0.0",
+
+        port=port,
+
+        debug=False
+
     )

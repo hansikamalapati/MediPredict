@@ -5,9 +5,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>MediPredict - Medicines</title>
+    <title>MediPredict | Inventory</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
@@ -17,276 +18,304 @@
 
 <body>
 
-    <!-- HEADER -->
+<header class="topbar">
 
-    <header class="header">
+    <div class="brand">
 
-        <div class="logo">
+        <div class="brand-icon">
+            M
+        </div>
 
-            <div class="logo-icon">
-                +
+        <div>
+
+            <div class="brand-name">
+                MediPredict
             </div>
 
-            <div>
-
-                <div class="logo-title">
-                    MediPredict
-                </div>
-
-                <div class="logo-subtitle">
-                    Medicine Stock Intelligence
-                </div>
-
-            </div>
+            <span class="brand-subtitle">
+                Medicine Inventory & Stockout Prevention
+            </span>
 
         </div>
 
-
-        <!-- NAVIGATION -->
-
-        <nav class="nav-links">
-
-            <a href="/">
-                Dashboard
-            </a>
-
-            <a href="/medicines" class="active">
-                Medicines
-            </a>
-
-            <a href="/predictions">
-                Predictions
-            </a>
-
-            <a href="/analytics">
-                Analytics
-            </a>
-
-            <a href="/alerts">
-                Alerts
-            </a>
-
-        </nav>
+    </div>
 
 
-        <!-- SYSTEM STATUS -->
+    <nav class="nav">
 
-        <div class="system-status">
+        <a href="/">
+            Dashboard
+        </a>
 
-            <span class="status-dot"></span>
+        <a href="/medicines" class="active">
+            Inventory
+        </a>
 
-            System Online
+        <a href="/predictions">
+            Predictions
+        </a>
 
-        </div>
+        <a href="/analytics">
+            Analytics
+        </a>
 
-    </header>
+        <a href="/alerts">
+            Alerts
+        </a>
+
+    </nav>
+
+</header>
 
 
+<main class="page">
 
-    <!-- MAIN -->
+    <div class="page-header">
 
-    <main class="container">
+        <div>
 
-
-        <!-- PAGE HEADER -->
-
-        <section class="page-header">
-
-            <div class="section-label">
-                INVENTORY MANAGEMENT
-            </div>
-
-            <h1>
+            <h1 class="page-title">
                 Medicine Inventory
             </h1>
 
-            <p>
-                View and monitor all medicines currently available
-                in the inventory.
+            <p class="page-description">
+                Current medicine stock and supply information.
             </p>
 
-        </section>
+        </div>
+
+    </div>
 
 
+    <section class="section">
 
-        <!-- SEARCH -->
+        <div class="section-header">
 
-        <section class="toolbar">
+            <div>
 
-            <div class="search-box">
+                <div class="section-title">
+                    Inventory Records
+                </div>
 
-                <span class="search-icon">
-                    🔎
-                </span>
+                <div class="section-subtitle">
+                    {{ medicines|length }} medicines currently monitored
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="section-body">
+
+            <div class="toolbar">
 
                 <input
                     type="text"
-                    id="searchInput"
+                    id="medicineSearch"
+                    class="search-box"
                     placeholder="Search medicine..."
-                    onkeyup="searchMedicines()"
                 >
 
             </div>
 
 
-            <div class="medicine-count">
+            <div class="table-wrapper">
 
-                Total Medicines:
-                <strong>
-                    {{ medicines|length }}
-                </strong>
+                <table class="data-table">
 
-            </div>
+                    <thead>
 
-        </section>
+                        <tr>
 
+                            <th>Medicine</th>
+                            <th>Category</th>
+                            <th>Strength</th>
+                            <th>Current Stock</th>
+                            <th>Daily Demand</th>
+                            <th>Supplier</th>
+                            <th>Lead Time</th>
+                            <th>Expiry</th>
+                            <th>Status</th>
 
+                        </tr>
 
-        <!-- MEDICINE TABLE -->
-
-        <section class="medicine-table-container">
-
-            <table class="medicine-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>
-                            Medicine
-                        </th>
-
-                        <th>
-                            Category
-                        </th>
-
-                        <th>
-                            Strength
-                        </th>
-
-                        <th>
-                            Current Stock
-                        </th>
-
-                        <th>
-                            Daily Usage
-                        </th>
-
-                        <th>
-                            Supplier
-                        </th>
-
-                        <th>
-                            Lead Time
-                        </th>
-
-                        <th>
-                            Expiry
-                        </th>
-
-                    </tr>
-
-                </thead>
+                    </thead>
 
 
-                <tbody id="medicineTable">
+                    <tbody id="medicineTable">
 
                     {% for medicine in medicines %}
 
-                    <tr>
+                        <tr>
 
-                        <td>
+                            <td>
 
-                            <strong>
-                                {{ medicine.name }}
-                            </strong>
+                                <div class="medicine-name">
+                                    {{ medicine.name }}
+                                </div>
 
-                        </td>
+                                <div class="medicine-sub">
+                                    ID: {{ medicine.id }}
+                                </div>
 
-                        <td>
-                            {{ medicine.category }}
-                        </td>
+                            </td>
 
-                        <td>
-                            {{ medicine.strength }}
-                        </td>
 
-                        <td>
-                            {{ medicine.current_stock }}
-                        </td>
+                            <td>
+                                {{ medicine.category or "-" }}
+                            </td>
 
-                        <td>
-                            {{ medicine.average_usage }}
-                        </td>
 
-                        <td>
-                            {{ medicine.supplier }}
-                        </td>
+                            <td>
+                                {{ medicine.strength or "-" }}
+                            </td>
 
-                        <td>
-                            {{ medicine.lead_time }} days
-                        </td>
 
-                        <td>
-                            {{ medicine.expiry_date }}
-                        </td>
+                            <td>
 
-                    </tr>
+                                <strong>
+                                    {{ medicine.current_stock }}
+                                </strong>
+
+                                units
+
+                            </td>
+
+
+                            <td>
+
+                                {{ medicine.average_usage }}
+                                /day
+
+                            </td>
+
+
+                            <td>
+                                {{ medicine.supplier or "-" }}
+                            </td>
+
+
+                            <td>
+                                {{ medicine.lead_time }} days
+                            </td>
+
+
+                            <td>
+                                {{ medicine.expiry_date or "-" }}
+                            </td>
+
+
+                            <td>
+
+                                {% if medicine.risk == "HIGH" %}
+
+                                    <span class="status status-high">
+                                        HIGH
+                                    </span>
+
+                                {% elif medicine.risk == "MEDIUM" %}
+
+                                    <span class="status status-medium">
+                                        MEDIUM
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status status-low">
+                                        LOW
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
 
                     {% endfor %}
 
-                </tbody>
+                    </tbody>
 
-            </table>
+                </table>
 
-        </section>
+            </div>
 
-    </main>
+        </div>
 
-
-
-    <!-- SEARCH JAVASCRIPT -->
-
-    <script>
-
-        function searchMedicines() {
-
-            const input =
-                document.getElementById("searchInput");
-
-            const searchText =
-                input.value.toLowerCase();
-
-            const rows =
-                document.querySelectorAll(
-                    "#medicineTable tr"
-                );
+    </section>
 
 
-            rows.forEach(function(row) {
+    <section class="section">
 
-                const medicineName =
-                    row
-                    .querySelector("td")
-                    .innerText
-                    .toLowerCase();
+        <div class="section-header">
+
+            <div class="section-title">
+                Inventory Information
+            </div>
+
+        </div>
+
+        <div class="section-body">
+
+            <div class="info-box">
+
+                <div class="info-box-title">
+                    Stock monitoring
+                </div>
+
+                <p>
+                    MediPredict combines current inventory,
+                    historical usage, predicted demand and
+                    supplier lead time to identify medicines
+                    that may require replenishment.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
 
 
-                if (medicineName.includes(searchText)) {
+<footer class="footer">
 
-                    row.style.display = "";
+    MediPredict · Medicine Stockout Prevention System
 
-                } else {
+</footer>
 
-                    row.style.display = "none";
 
-                }
+<script>
 
-            });
+const searchInput =
+    document.getElementById("medicineSearch");
 
-        }
+searchInput.addEventListener("input", function () {
 
-    </script>
+    const searchText =
+        this.value.toLowerCase();
+
+    const rows =
+        document.querySelectorAll(
+            "#medicineTable tr"
+        );
+
+    rows.forEach(function (row) {
+
+        const text =
+            row.textContent.toLowerCase();
+
+        row.style.display =
+            text.includes(searchText)
+                ? ""
+                : "none";
+
+    });
+
+});
+
+</script>
 
 </body>
 
