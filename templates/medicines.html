@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediPredict - Medicines</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                +
+            </div>
+
+            <div>
+
+                <div class="logo-title">
+                    MediPredict
+                </div>
+
+                <div class="logo-subtitle">
+                    Medicine Stock Intelligence
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/medicines" class="active">
+                Medicines
+            </a>
+
+            <a href="/predictions">
+                Predictions
+            </a>
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/alerts">
+                Alerts
+            </a>
+
+        </nav>
+
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            System Online
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-header">
+
+            <div class="section-label">
+                INVENTORY MANAGEMENT
+            </div>
+
+            <h1>
+                Medicine Inventory
+            </h1>
+
+            <p>
+                View and monitor all medicines currently available
+                in the inventory.
+            </p>
+
+        </section>
+
+
+
+        <!-- SEARCH -->
+
+        <section class="toolbar">
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    🔎
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search medicine..."
+                    onkeyup="searchMedicines()"
+                >
+
+            </div>
+
+
+            <div class="medicine-count">
+
+                Total Medicines:
+                <strong>
+                    {{ medicines|length }}
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- MEDICINE TABLE -->
+
+        <section class="medicine-table-container">
+
+            <table class="medicine-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Medicine
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Strength
+                        </th>
+
+                        <th>
+                            Current Stock
+                        </th>
+
+                        <th>
+                            Daily Usage
+                        </th>
+
+                        <th>
+                            Supplier
+                        </th>
+
+                        <th>
+                            Lead Time
+                        </th>
+
+                        <th>
+                            Expiry
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="medicineTable">
+
+                    {% for medicine in medicines %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ medicine.name }}
+                            </strong>
+
+                        </td>
+
+                        <td>
+                            {{ medicine.category }}
+                        </td>
+
+                        <td>
+                            {{ medicine.strength }}
+                        </td>
+
+                        <td>
+                            {{ medicine.current_stock }}
+                        </td>
+
+                        <td>
+                            {{ medicine.average_usage }}
+                        </td>
+
+                        <td>
+                            {{ medicine.supplier }}
+                        </td>
+
+                        <td>
+                            {{ medicine.lead_time }} days
+                        </td>
+
+                        <td>
+                            {{ medicine.expiry_date }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- SEARCH JAVASCRIPT -->
+
+    <script>
+
+        function searchMedicines() {
+
+            const input =
+                document.getElementById("searchInput");
+
+            const searchText =
+                input.value.toLowerCase();
+
+            const rows =
+                document.querySelectorAll(
+                    "#medicineTable tr"
+                );
+
+
+            rows.forEach(function(row) {
+
+                const medicineName =
+                    row
+                    .querySelector("td")
+                    .innerText
+                    .toLowerCase();
+
+
+                if (medicineName.includes(searchText)) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

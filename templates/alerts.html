@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediPredict - Alerts</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="header">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                +
+            </div>
+
+            <div>
+
+                <div class="logo-title">
+                    MediPredict
+                </div>
+
+                <div class="logo-subtitle">
+                    Medicine Stock Intelligence
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/medicines">
+                Medicines
+            </a>
+
+            <a href="/predictions">
+                Predictions
+            </a>
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/alerts" class="active">
+                Alerts
+            </a>
+
+        </nav>
+
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            System Online
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main class="container">
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-header">
+
+            <div class="section-label">
+                INVENTORY ALERTS
+            </div>
+
+            <h1>
+                Stock Alerts
+            </h1>
+
+            <p>
+                Review medicines that may require immediate
+                attention or upcoming replenishment.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUMMARY
+             ================================================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- HIGH RISK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon high-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        High Risk Alerts
+                    </div>
+
+                    <div class="stat-value high-text">
+                        {{ high_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MEDIUM RISK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon medium-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Medium Risk Alerts
+                    </div>
+
+                    <div class="stat-value medium-text">
+                        {{ medium_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon medicine-icon">
+                    💊
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Medicines Monitored
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_medicines }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SAFE -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon low-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Low Risk
+                    </div>
+
+                    <div class="stat-value low-text">
+                        {{ low_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ALERT LIST
+             ================================================= -->
+
+        <section class="risk-analysis">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-label">
+                        ACTION REQUIRED
+                    </div>
+
+                    <h2>
+                        Medicines Requiring Attention
+                    </h2>
+
+                </div>
+
+                <p>
+                    High and medium risk medicines are shown below.
+                </p>
+
+            </div>
+
+
+
+            <!-- ALERT CARDS -->
+
+            <div class="alerts-list">
+
+
+                {% for medicine in medicines %}
+
+
+                    {% if medicine.risk == "HIGH" or medicine.risk == "MEDIUM" %}
+
+
+                    <div class="alert-card
+                        {% if medicine.risk == 'HIGH' %}
+                            alert-high
+                        {% else %}
+                            alert-medium
+                        {% endif %}
+                    ">
+
+
+                        <!-- ALERT ICON -->
+
+                        <div class="alert-icon">
+
+                            {% if medicine.risk == "HIGH" %}
+                                !
+                            {% else %}
+                                !
+                            {% endif %}
+
+                        </div>
+
+
+
+                        <!-- MEDICINE INFORMATION -->
+
+                        <div class="alert-content">
+
+
+                            <div class="alert-title-row">
+
+                                <h3>
+                                    {{ medicine.name }}
+                                </h3>
+
+
+                                {% if medicine.risk == "HIGH" %}
+
+                                <span class="table-risk high">
+                                    HIGH RISK
+                                </span>
+
+                                {% else %}
+
+                                <span class="table-risk medium">
+                                    MEDIUM RISK
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <p>
+
+                                Current stock:
+                                <strong>
+                                    {{ medicine.current_stock }}
+                                </strong>
+
+                                units.
+
+                                Average daily usage:
+                                <strong>
+                                    {{ medicine.average_usage }}
+                                </strong>
+
+                                units/day.
+
+                            </p>
+
+
+                            <p>
+
+                                Estimated stock remaining:
+                                <strong>
+                                    {{ medicine.days_remaining }}
+                                </strong>
+
+                                days.
+
+                                Supplier delivery time:
+                                <strong>
+                                    {{ medicine.lead_time }}
+                                </strong>
+
+                                days.
+
+                            </p>
+
+
+                            <!-- RECOMMENDATION -->
+
+                            {% if medicine.risk == "HIGH" %}
+
+                            <div class="alert-recommendation">
+
+                                ⚠️
+
+                                <strong>
+                                    Immediate reorder recommended.
+                                </strong>
+
+                                Current stock may run out before
+                                the next supplier delivery.
+
+                            </div>
+
+                            {% else %}
+
+                            <div class="alert-recommendation medium-recommendation">
+
+                                ⚠️
+
+                                <strong>
+                                    Monitor and prepare for reorder.
+                                </strong>
+
+                                Inventory may become critical soon.
+
+                            </div>
+
+                            {% endif %}
+
+
+                        </div>
+
+
+
+                        <!-- REORDER -->
+
+                        <div class="alert-reorder">
+
+                            <span>
+                                Recommended Reorder
+                            </span>
+
+                            <strong>
+                                {{ medicine.reorder_quantity }}
+                                units
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+                    {% endif %}
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             NO ALERT MESSAGE
+             ================================================= -->
+
+        {% if high_risk == 0 and medium_risk == 0 %}
+
+        <section class="safe-box no-alert">
+
+            <strong>
+                ✓ No Stock Alerts
+            </strong>
+
+            <p>
+                All medicines currently have sufficient
+                inventory based on the current prediction.
+            </p>
+
+        </section>
+
+        {% endif %}
+
+
+    </main>
+
+
+</body>
+
+</html>

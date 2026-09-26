@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediPredict - Predictions</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                +
+            </div>
+
+            <div>
+
+                <div class="logo-title">
+                    MediPredict
+                </div>
+
+                <div class="logo-subtitle">
+                    Medicine Stock Intelligence
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/medicines">
+                Medicines
+            </a>
+
+            <a href="/predictions" class="active">
+                Predictions
+            </a>
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/alerts">
+                Alerts
+            </a>
+
+        </nav>
+
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            System Online
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <!-- PAGE INTRO -->
+
+        <section class="page-header">
+
+            <div class="section-label">
+                PREDICTIVE INTELLIGENCE
+            </div>
+
+            <h1>
+                Stockout Predictions
+            </h1>
+
+            <p>
+                Predict when medicine inventory may run out
+                based on current stock, usage patterns and
+                supplier delivery time.
+            </p>
+
+        </section>
+
+
+
+        <!-- ================= SUMMARY ================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- High Risk -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon high-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        High Risk
+                    </div>
+
+                    <div class="stat-value high-text">
+                        {{ high_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Medium Risk -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon medium-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Medium Risk
+                    </div>
+
+                    <div class="stat-value medium-text">
+                        {{ medium_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Low Risk -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon low-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Low Risk
+                    </div>
+
+                    <div class="stat-value low-text">
+                        {{ low_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Total -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon medicine-icon">
+                    💊
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Total Medicines
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_medicines }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= PREDICTION TABLE ================= -->
+
+        <section class="risk-analysis">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-label">
+                        STOCKOUT FORECAST
+                    </div>
+
+                    <h2>
+                        Medicine Risk Predictions
+                    </h2>
+
+                </div>
+
+                <p>
+                    Predictions are based on the latest
+                    30 days of usage history.
+                </p>
+
+            </div>
+
+
+
+            <div class="table-container">
+
+                <table class="risk-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Medicine
+                            </th>
+
+                            <th>
+                                Current Stock
+                            </th>
+
+                            <th>
+                                Avg Daily Usage
+                            </th>
+
+                            <th>
+                                Days Remaining
+                            </th>
+
+                            <th>
+                                Delivery Time
+                            </th>
+
+                            <th>
+                                Risk
+                            </th>
+
+                            <th>
+                                Reorder Quantity
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for medicine in medicines | sort(attribute='days_remaining') %}
+
+
+                        <tr>
+
+
+                            <!-- Medicine -->
+
+                            <td>
+
+                                <strong>
+                                    {{ medicine.name }}
+                                </strong>
+
+                            </td>
+
+
+                            <!-- Current Stock -->
+
+                            <td>
+                                {{ medicine.current_stock }}
+                            </td>
+
+
+                            <!-- Daily Usage -->
+
+                            <td>
+                                {{ medicine.average_usage }}
+                            </td>
+
+
+                            <!-- Days Remaining -->
+
+                            <td>
+
+                                <strong>
+                                    {{ medicine.days_remaining | round(1) }}
+                                </strong>
+
+                                days
+
+                            </td>
+
+
+                            <!-- Delivery -->
+
+                            <td>
+                                {{ medicine.lead_time }} days
+                            </td>
+
+
+                            <!-- Risk -->
+
+                            <td>
+
+
+                                {% if medicine.risk == "HIGH" %}
+
+                                <span class="table-risk high">
+                                    HIGH
+                                </span>
+
+
+                                {% elif medicine.risk == "MEDIUM" %}
+
+                                <span class="table-risk medium">
+                                    MEDIUM
+                                </span>
+
+
+                                {% else %}
+
+                                <span class="table-risk low">
+                                    LOW
+                                </span>
+
+                                {% endif %}
+
+
+                            </td>
+
+
+                            <!-- Reorder -->
+
+                            <td>
+
+                                {% if medicine.reorder_quantity > 0 %}
+
+                                <strong>
+                                    {{ medicine.reorder_quantity }}
+                                </strong>
+
+                                units
+
+                                {% else %}
+
+                                <span>
+                                    No reorder
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= HOW PREDICTION WORKS ================= -->
+
+        <section class="risk-analysis prediction-method">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-label">
+                        HOW IT WORKS
+                    </div>
+
+                    <h2>
+                        Stockout Prediction Logic
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="prediction-grid">
+
+
+                <div class="prediction-card">
+
+                    <div class="prediction-number">
+                        1
+                    </div>
+
+                    <h3>
+                        Analyze Usage
+                    </h3>
+
+                    <p>
+                        The system calculates average daily
+                        medicine consumption using the latest
+                        30 days of usage history.
+                    </p>
+
+                </div>
+
+
+
+                <div class="prediction-card">
+
+                    <div class="prediction-number">
+                        2
+                    </div>
+
+                    <h3>
+                        Estimate Stock Duration
+                    </h3>
+
+                    <p>
+                        Current inventory is divided by average
+                        daily usage to estimate how many days
+                        the medicine will last.
+                    </p>
+
+                </div>
+
+
+
+                <div class="prediction-card">
+
+                    <div class="prediction-number">
+                        3
+                    </div>
+
+                    <h3>
+                        Compare Delivery Time
+                    </h3>
+
+                    <p>
+                        Estimated stock duration is compared
+                        with the supplier's delivery lead time.
+                    </p>
+
+                </div>
+
+
+
+                <div class="prediction-card">
+
+                    <div class="prediction-number">
+                        4
+                    </div>
+
+                    <h3>
+                        Recommend Reorder
+                    </h3>
+
+                    <p>
+                        The system calculates a recommended
+                        reorder quantity to maintain safety stock.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,1432 @@
+/* =====================================================
+   MEDIPREDICT - MAIN STYLESHEET
+   ===================================================== */
+
+
+/* ================= GENERAL ================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7f9;
+    color: #17324d;
+    line-height: 1.5;
+}
+
+
+/* ================= HEADER ================= */
+
+.header {
+    min-height: 94px;
+    background: white;
+    border-top: 1px solid #d8dee4;
+    border-bottom: 1px solid #d8dee4;
+
+    display: flex;
+    align-items: center;
+
+    padding: 18px 5%;
+
+    gap: 30px;
+}
+
+
+/* Logo */
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    flex-shrink: 0;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+
+    background: #0f8278;
+    color: white;
+
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 34px;
+    font-weight: bold;
+}
+
+.logo-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #102f49;
+}
+
+.logo-subtitle {
+    font-size: 14px;
+    color: #718096;
+}
+
+
+/* ================= NAVIGATION ================= */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-left: auto;
+}
+
+.nav-links a {
+    text-decoration: none;
+
+    color: #536779;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    padding: 9px 13px;
+
+    border-radius: 8px;
+
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover {
+    background: #e7f5f3;
+    color: #0f8278;
+}
+
+.nav-links a.active {
+    background: #0f8278;
+    color: white;
+}
+
+
+/* System status */
+
+.system-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #536779;
+
+    font-size: 14px;
+
+    margin-left: 10px;
+
+    white-space: nowrap;
+}
+
+.status-dot {
+    width: 11px;
+    height: 11px;
+
+    background: #1fa66a;
+
+    border-radius: 50%;
+
+    display: inline-block;
+}
+
+
+/* ================= MAIN CONTAINER ================= */
+
+.container {
+    width: 90%;
+    max-width: 1450px;
+
+    margin: 0 auto;
+
+    padding: 45px 0 70px;
+}
+
+
+/* ================= INTRO ================= */
+
+.intro {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 30px;
+
+    margin-bottom: 38px;
+}
+
+.section-label {
+    color: #0f8278;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 12px;
+}
+
+.intro h1 {
+    font-size: 38px;
+
+    line-height: 1.2;
+
+    color: #17324d;
+
+    margin-bottom: 14px;
+}
+
+.intro p {
+    color: #678096;
+
+    font-size: 18px;
+
+    max-width: 850px;
+}
+
+
+/* Data period */
+
+.data-period {
+    background: white;
+
+    border: 1px solid #dce4e9;
+
+    border-radius: 12px;
+
+    padding: 18px 24px;
+
+    min-width: 190px;
+
+    box-shadow: 0 2px 8px rgba(30, 60, 80, 0.03);
+}
+
+.data-period span {
+    display: block;
+
+    color: #8292a1;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 7px;
+}
+
+.data-period strong {
+    font-size: 15px;
+
+    color: #17324d;
+}
+
+
+/* ================= STATISTICS ================= */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+
+    margin-bottom: 35px;
+}
+
+.stat-card {
+    background: white;
+
+    border: 1px solid #dce4e9;
+
+    border-radius: 12px;
+
+    padding: 28px 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    min-height: 115px;
+
+    box-shadow: 0 2px 8px rgba(30, 60, 80, 0.03);
+}
+
+
+/* Stat icons */
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 11px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+    font-weight: bold;
+
+    flex-shrink: 0;
+}
+
+.medicine-icon {
+    background: #e7f1f6;
+}
+
+.high-icon {
+    background: #fde9e9;
+    color: #d34b4b;
+}
+
+.medium-icon {
+    background: #fff3d8;
+    color: #b37a00;
+}
+
+.low-icon {
+    background: #e4f3ec;
+    color: #25855d;
+}
+
+
+/* Stat text */
+
+.stat-label {
+    color: #718096;
+
+    font-size: 14px;
+
+    margin-bottom: 3px;
+}
+
+.stat-value {
+    color: #17324d;
+
+    font-size: 29px;
+
+    font-weight: 700;
+}
+
+.high-text {
+    color: #d34b4b;
+}
+
+.medium-text {
+    color: #b37a00;
+}
+
+.low-text {
+    color: #25855d;
+}
+
+
+/* ================= TOOLBAR ================= */
+
+.toolbar {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+
+    margin-bottom: 23px;
+}
+
+.search-box {
+    width: 410px;
+
+    background: white;
+
+    border: 1px solid #d4dfe5;
+
+    border-radius: 9px;
+
+    height: 53px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 15px;
+}
+
+.search-icon {
+    font-size: 18px;
+
+    margin-right: 10px;
+
+    color: #7890a3;
+}
+
+.search-box input {
+    border: none;
+
+    outline: none;
+
+    width: 100%;
+
+    font-size: 15px;
+
+    color: #17324d;
+
+    background: transparent;
+}
+
+.search-box input::placeholder {
+    color: #8b9baa;
+}
+
+.medicine-count {
+    color: #718096;
+
+    font-size: 14px;
+}
+
+
+/* ================= MEDICINE GRID ================= */
+
+.medicine-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 22px;
+
+    margin-bottom: 50px;
+}
+
+
+/* Medicine card */
+
+.medicine-card {
+    background: white;
+
+    border: 1px solid #dce4e9;
+
+    border-radius: 12px;
+
+    padding: 26px;
+
+    box-shadow: 0 2px 8px rgba(30, 60, 80, 0.03);
+
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.medicine-card:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 7px 20px rgba(30, 60, 80, 0.08);
+}
+
+
+/* Card header */
+
+.card-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 28px;
+}
+
+.card-header h2 {
+    color: #17324d;
+
+    font-size: 22px;
+
+    margin-bottom: 5px;
+}
+
+.medicine-info {
+    color: #71869a;
+
+    font-size: 13px;
+}
+
+
+/* ================= RISK BADGES ================= */
+
+.risk {
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.risk.high {
+    background: #fde8e8;
+    color: #d34b4b;
+}
+
+.risk.medium {
+    background: #fff1d3;
+    color: #a97200;
+}
+
+.risk.low {
+    background: #e3f3eb;
+    color: #218457;
+}
+
+
+/* ================= MEDICINE STATS ================= */
+
+.medicine-stats {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 25px;
+
+    margin-bottom: 22px;
+}
+
+.medicine-stats span {
+    display: block;
+
+    color: #7890a3;
+
+    font-size: 13px;
+
+    margin-bottom: 5px;
+}
+
+.medicine-stats strong {
+    display: block;
+
+    color: #17324d;
+
+    font-size: 23px;
+
+    font-weight: 700;
+}
+
+
+/* ================= STOCK PROGRESS ================= */
+
+.stock-section {
+    border-top: 1px solid #edf1f4;
+
+    padding-top: 18px;
+
+    margin-bottom: 22px;
+}
+
+.stock-label {
+    display: flex;
+
+    justify-content: space-between;
+
+    color: #71869a;
+
+    font-size: 12px;
+
+    margin-bottom: 8px;
+}
+
+.progress-bar {
+    height: 8px;
+
+    background: #e9eef1;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+
+    border-radius: 20px;
+
+    width: 0;
+
+    transition: width 0.6s ease;
+}
+
+.progress-high {
+    background: #d34b4b;
+}
+
+.progress-medium {
+    background: #d6a12a;
+}
+
+.progress-low {
+    background: #3ca16d;
+}
+
+
+/* ================= MEDICINE DETAILS ================= */
+
+.medicine-details {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+
+    padding-top: 4px;
+
+    margin-bottom: 20px;
+}
+
+.medicine-details span {
+    display: block;
+
+    color: #7890a3;
+
+    font-size: 12px;
+
+    margin-bottom: 4px;
+}
+
+.medicine-details strong {
+    color: #304b63;
+
+    font-size: 14px;
+}
+
+
+/* ================= ALERT BOXES ================= */
+
+.alert-box {
+    border-radius: 8px;
+
+    padding: 13px 15px;
+
+    margin-bottom: 14px;
+}
+
+.alert-box strong {
+    display: block;
+
+    font-size: 13px;
+
+    margin-bottom: 3px;
+}
+
+.alert-box p {
+    font-size: 12px;
+
+    margin: 0;
+}
+
+.high-alert {
+    background: #fff0f0;
+
+    border: 1px solid #f5d0d0;
+
+    color: #b93e3e;
+}
+
+.medium-alert {
+    background: #fff8e6;
+
+    border: 1px solid #f1dfb0;
+
+    color: #9b6b00;
+}
+
+
+/* Safe */
+
+.safe-box {
+    background: #edf8f2;
+
+    border: 1px solid #d4ecdf;
+
+    color: #237b54;
+
+    border-radius: 8px;
+
+    padding: 13px 15px;
+
+    margin-bottom: 14px;
+}
+
+.safe-box strong {
+    display: block;
+
+    font-size: 13px;
+
+    margin-bottom: 3px;
+}
+
+.safe-box p {
+    font-size: 12px;
+
+    margin: 0;
+}
+
+
+/* ================= REORDER ================= */
+
+.reorder {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    background: #f4f8fa;
+
+    border-radius: 8px;
+
+    padding: 12px 14px;
+
+    margin-bottom: 18px;
+}
+
+.reorder span {
+    color: #71869a;
+
+    font-size: 12px;
+}
+
+.reorder strong {
+    color: #0f8278;
+
+    font-size: 14px;
+}
+
+
+/* ================= CARD FOOTER ================= */
+
+.card-footer {
+    border-top: 1px solid #edf1f4;
+
+    padding-top: 15px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    color: #8796a4;
+
+    font-size: 11px;
+}
+
+
+/* ================= RISK ANALYSIS ================= */
+
+.risk-analysis {
+    background: white;
+
+    border: 1px solid #dce4e9;
+
+    border-radius: 12px;
+
+    padding: 30px;
+
+    box-shadow: 0 2px 8px rgba(30, 60, 80, 0.03);
+}
+
+.section-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    gap: 30px;
+
+    margin-bottom: 25px;
+}
+
+.section-heading h2 {
+    color: #17324d;
+
+    font-size: 25px;
+
+    margin-top: 4px;
+}
+
+.section-heading p {
+    color: #71869a;
+
+    font-size: 13px;
+
+    max-width: 450px;
+
+    text-align: right;
+}
+
+
+/* Table */
+
+.table-container {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.risk-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 800px;
+}
+
+.risk-table th {
+    background: #f5f8fa;
+
+    color: #6f8191;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    text-align: left;
+
+    padding: 14px 15px;
+
+    border-bottom: 1px solid #dce4e9;
+}
+
+.risk-table td {
+    padding: 16px 15px;
+
+    color: #536779;
+
+    font-size: 13px;
+
+    border-bottom: 1px solid #edf1f4;
+}
+
+.risk-table tr:last-child td {
+    border-bottom: none;
+}
+
+.risk-table td strong {
+    color: #17324d;
+}
+
+
+/* Table risk */
+
+.table-risk {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 5px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.table-risk.high {
+    background: #fde8e8;
+
+    color: #d34b4b;
+}
+
+.table-risk.medium {
+    background: #fff1d3;
+
+    color: #a97200;
+}
+
+.table-risk.low {
+    background: #e3f3eb;
+
+    color: #218457;
+}
+
+
+/* ================= MEDICINES PAGE SUPPORT ================= */
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    color: #17324d;
+
+    font-size: 34px;
+
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #71869a;
+
+    font-size: 16px;
+}
+
+
+/* Medicine table */
+
+.medicine-table-container {
+    background: white;
+
+    border: 1px solid #dce4e9;
+
+    border-radius: 12px;
+
+    padding: 10px;
+
+    overflow-x: auto;
+}
+
+.medicine-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 900px;
+}
+
+.medicine-table th {
+    background: #f5f8fa;
+
+    color: #687d8e;
+
+    text-align: left;
+
+    padding: 15px;
+
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+}
+
+.medicine-table td {
+    padding: 16px 15px;
+
+    border-top: 1px solid #edf1f4;
+
+    color: #536779;
+
+    font-size: 13px;
+}
+
+.medicine-table td strong {
+    color: #17324d;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+
+/* Tablets */
+
+@media (max-width: 1100px) {
+
+    .header {
+        padding-left: 3%;
+        padding-right: 3%;
+    }
+
+    .nav-links {
+        gap: 3px;
+    }
+
+    .nav-links a {
+        padding: 8px 9px;
+
+        font-size: 13px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .medicine-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .header {
+        flex-direction: column;
+
+        align-items: center;
+
+        padding: 18px 20px;
+
+        gap: 15px;
+    }
+
+    .logo {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+    .nav-links {
+        width: 100%;
+
+        margin: 0;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+    }
+
+    .system-status {
+        margin: 0;
+    }
+
+
+    .container {
+        width: 92%;
+
+        padding-top: 30px;
+    }
+
+
+    .intro {
+        flex-direction: column;
+    }
+
+    .intro h1 {
+        font-size: 30px;
+    }
+
+    .intro p {
+        font-size: 15px;
+    }
+
+    .data-period {
+        width: 100%;
+    }
+
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .toolbar {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+
+    .medicine-count {
+        text-align: right;
+    }
+
+
+    .medicine-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .section-heading {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .section-heading p {
+        text-align: left;
+    }
+
+
+    .risk-analysis {
+        padding: 20px;
+    }
+
+}
+
+
+/* Small phones */
+
+@media (max-width: 480px) {
+
+    .logo-title {
+        font-size: 21px;
+    }
+
+    .logo-subtitle {
+        font-size: 12px;
+    }
+
+    .logo-icon {
+        width: 44px;
+        height: 44px;
+
+        font-size: 29px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+
+        padding: 7px 9px;
+    }
+
+    .intro h1 {
+        font-size: 26px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .medicine-card {
+        padding: 20px;
+    }
+
+    .card-footer {
+        flex-direction: column;
+    }
+
+}
+/* ================= PREDICTION PAGE ================= */
+
+.prediction-method {
+    margin-top: 25px;
+}
+
+.prediction-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+.prediction-card {
+    background: #f7fafb;
+
+    border: 1px solid #e0e8ec;
+
+    border-radius: 10px;
+
+    padding: 22px;
+}
+
+.prediction-number {
+    width: 34px;
+    height: 34px;
+
+    background: #0f8278;
+
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+
+    margin-bottom: 15px;
+}
+
+.prediction-card h3 {
+    color: #17324d;
+
+    font-size: 17px;
+
+    margin-bottom: 8px;
+}
+
+.prediction-card p {
+    color: #71869a;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+@media (max-width: 1000px) {
+
+    .prediction-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .prediction-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* =====================================================
+   ANALYTICS PAGE
+   ===================================================== */
+
+.analytics-card {
+    margin-bottom: 25px;
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    margin-top: 20px;
+}
+
+.analytics-card .table-container {
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+
+    .chart-container {
+        height: 320px;
+    }
+
+}
+/* =====================================================
+   ALERTS PAGE
+   ===================================================== */
+
+.alerts-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.alert-card {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 18px;
+
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 22px;
+
+    border: 1px solid #dce4e9;
+
+    box-shadow: 0 2px 8px rgba(30, 60, 80, 0.03);
+}
+
+
+.alert-high {
+    border-left: 5px solid #d34b4b;
+}
+
+
+.alert-medium {
+    border-left: 5px solid #d6a12a;
+}
+
+
+/* Alert icon */
+
+.alert-icon {
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: bold;
+
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+
+.alert-high .alert-icon {
+    background: #fde8e8;
+
+    color: #d34b4b;
+}
+
+
+.alert-medium .alert-icon {
+    background: #fff1d3;
+
+    color: #a97200;
+}
+
+
+/* Alert content */
+
+.alert-content {
+    flex: 1;
+}
+
+
+.alert-title-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 10px;
+}
+
+
+.alert-title-row h3 {
+    color: #17324d;
+
+    font-size: 19px;
+}
+
+
+.alert-content p {
+    color: #71869a;
+
+    font-size: 13px;
+
+    margin-bottom: 7px;
+}
+
+
+.alert-content strong {
+    color: #304b63;
+}
+
+
+/* Recommendation */
+
+.alert-recommendation {
+    background: #fff1f1;
+
+    color: #a53d3d;
+
+    border-radius: 7px;
+
+    padding: 11px 13px;
+
+    margin-top: 14px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+.alert-recommendation strong {
+    color: #a53d3d;
+}
+
+
+.medium-recommendation {
+    background: #fff8e7;
+
+    color: #956900;
+}
+
+
+.medium-recommendation strong {
+    color: #956900;
+}
+
+
+/* Reorder section */
+
+.alert-reorder {
+    min-width: 150px;
+
+    background: #f4f8fa;
+
+    border-radius: 9px;
+
+    padding: 14px;
+
+    text-align: center;
+}
+
+
+.alert-reorder span {
+    display: block;
+
+    color: #71869a;
+
+    font-size: 11px;
+
+    margin-bottom: 5px;
+}
+
+
+.alert-reorder strong {
+    color: #0f8278;
+
+    font-size: 18px;
+}
+
+
+/* No alerts */
+
+.no-alert {
+    margin-top: 25px;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .alert-card {
+        flex-direction: column;
+    }
+
+    .alert-reorder {
+        width: 100%;
+    }
+
+    .alert-title-row {
+        flex-wrap: wrap;
+    }
+
+}

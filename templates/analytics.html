@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediPredict - Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <header class="header">
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                +
+            </div>
+
+            <div>
+
+                <div class="logo-title">
+                    MediPredict
+                </div>
+
+                <div class="logo-subtitle">
+                    Medicine Stock Intelligence
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/medicines">
+                Medicines
+            </a>
+
+            <a href="/predictions">
+                Predictions
+            </a>
+
+            <a href="/analytics" class="active">
+                Analytics
+            </a>
+
+            <a href="/alerts">
+                Alerts
+            </a>
+
+        </nav>
+
+
+        <!-- SYSTEM STATUS -->
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            System Online
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="container">
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="page-header">
+
+            <div class="section-label">
+                INVENTORY ANALYTICS
+            </div>
+
+            <h1>
+                Usage Analytics
+            </h1>
+
+            <p>
+                Analyze medicine consumption patterns and
+                inventory levels using the latest 30 days of data.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+             ================================================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- TOTAL MEDICINES -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon medicine-icon">
+                    💊
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Total Medicines
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_medicines }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HIGH RISK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon high-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        High Risk
+                    </div>
+
+                    <div class="stat-value high-text">
+                        {{ high_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MEDIUM RISK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon medium-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Medium Risk
+                    </div>
+
+                    <div class="stat-value medium-text">
+                        {{ medium_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOW RISK -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon low-icon">
+                    ✓
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Low Risk
+                    </div>
+
+                    <div class="stat-value low-text">
+                        {{ low_risk }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DAILY USAGE CHART
+             ================================================= -->
+
+        <section class="risk-analysis analytics-card">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-label">
+                        CONSUMPTION ANALYSIS
+                    </div>
+
+                    <h2>
+                        Average Daily Medicine Usage
+                    </h2>
+
+                </div>
+
+                <p>
+                    Average quantity consumed per day based on
+                    the latest 30 days of usage history.
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="usageChart"></canvas>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CURRENT STOCK CHART
+             ================================================= -->
+
+        <section class="risk-analysis analytics-card">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-label">
+                        INVENTORY ANALYSIS
+                    </div>
+
+                    <h2>
+                        Current Stock Levels
+                    </h2>
+
+                </div>
+
+                <p>
+                    Current inventory available for each medicine.
+                </p>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="stockChart"></canvas>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             MEDICINE ANALYTICS TABLE
+             ================================================= -->
+
+        <section class="risk-analysis analytics-card">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-label">
+                        MEDICINE OVERVIEW
+                    </div>
+
+                    <h2>
+                        Consumption Summary
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table class="risk-table">
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Medicine
+                            </th>
+
+                            <th>
+                                Current Stock
+                            </th>
+
+                            <th>
+                                Avg Daily Usage
+                            </th>
+
+                            <th>
+                                Days Remaining
+                            </th>
+
+                            <th>
+                                Risk
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for medicine in medicines %}
+
+                        <tr>
+
+                            <td>
+
+                                <strong>
+                                    {{ medicine.name }}
+                                </strong>
+
+                            </td>
+
+
+                            <td>
+                                {{ medicine.current_stock }}
+                            </td>
+
+
+                            <td>
+                                {{ medicine.average_usage }}
+                            </td>
+
+
+                            <td>
+                                {{ medicine.days_remaining }} days
+                            </td>
+
+
+                            <td>
+
+                                {% if medicine.risk == "HIGH" %}
+
+                                <span class="table-risk high">
+                                    HIGH
+                                </span>
+
+                                {% elif medicine.risk == "MEDIUM" %}
+
+                                <span class="table-risk medium">
+                                    MEDIUM
+                                </span>
+
+                                {% else %}
+
+                                <span class="table-risk low">
+                                    LOW
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         MEDICINE DATA FOR JAVASCRIPT
+         ===================================================== -->
+
+    <script
+        id="medicine-data"
+        type="application/json"
+    >
+        {{ medicines | tojson }}
+    </script>
+
+
+
+    <!-- =====================================================
+         CHART JAVASCRIPT
+         ===================================================== -->
+
+    <script>
+
+
+        /* =================================================
+           READ DATA FROM FLASK
+           ================================================= */
+
+        const medicines = JSON.parse(
+            document.getElementById("medicine-data").textContent
+        );
+
+
+        /* =================================================
+           CREATE DATA ARRAYS
+           ================================================= */
+
+        const medicineNames = medicines.map(
+            medicine => medicine.name
+        );
+
+
+        const averageUsage = medicines.map(
+            medicine => medicine.average_usage
+        );
+
+
+        const currentStock = medicines.map(
+            medicine => medicine.current_stock
+        );
+
+
+
+        /* =================================================
+           AVERAGE DAILY USAGE CHART
+           ================================================= */
+
+        const usageCanvas =
+            document.getElementById("usageChart");
+
+
+        const usageContext =
+            usageCanvas.getContext("2d");
+
+
+        new Chart(usageContext, {
+
+            type: "bar",
+
+
+            data: {
+
+                labels: medicineNames,
+
+
+                datasets: [
+
+                    {
+
+                        label: "Average Daily Usage",
+
+                        data: averageUsage
+
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+
+                plugins: {
+
+                    legend: {
+
+                        display: true
+
+                    }
+
+                },
+
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        title: {
+
+                            display: true,
+
+                            text: "Units Used Per Day"
+
+                        }
+
+                    },
+
+
+                    x: {
+
+                        title: {
+
+                            display: true,
+
+                            text: "Medicine"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+
+
+        /* =================================================
+           CURRENT STOCK CHART
+           ================================================= */
+
+        const stockCanvas =
+            document.getElementById("stockChart");
+
+
+        const stockContext =
+            stockCanvas.getContext("2d");
+
+
+        new Chart(stockContext, {
+
+            type: "bar",
+
+
+            data: {
+
+                labels: medicineNames,
+
+
+                datasets: [
+
+                    {
+
+                        label: "Current Stock",
+
+                        data: currentStock
+
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+
+                plugins: {
+
+                    legend: {
+
+                        display: true
+
+                    }
+
+                },
+
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        title: {
+
+                            display: true,
+
+                            text: "Units in Stock"
+
+                        }
+
+                    },
+
+
+                    x: {
+
+                        title: {
+
+                            display: true,
+
+                            text: "Medicine"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+
+    </script>
+
+
+</body>
+
+</html>

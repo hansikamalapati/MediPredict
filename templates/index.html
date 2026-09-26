@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediPredict - Medicine Stock Intelligence</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <!-- Logo -->
+        <div class="logo">
+            <div class="logo-icon">+</div>
+
+            <div>
+                <div class="logo-title">MediPredict</div>
+                <div class="logo-subtitle">Medicine Stock Intelligence</div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="nav-links">
+
+            <a href="/" class="active">
+                Dashboard
+            </a>
+
+            <a href="/medicines">
+                Medicines
+            </a>
+
+            <a href="/predictions">
+                Predictions
+            </a>
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/alerts">
+                Alerts
+            </a>
+
+        </nav>
+
+        <!-- System Status -->
+        <div class="system-status">
+            <span class="status-dot"></span>
+            System Online
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+        <!-- Intro -->
+        <section class="intro">
+
+            <div>
+
+                <div class="section-label">
+                    INVENTORY MONITORING
+                </div>
+
+                <h1>
+                    Medicine Stockout Dashboard
+                </h1>
+
+                <p>
+                    Monitor medicine inventory, analyze consumption patterns
+                    and identify possible stockouts before they happen.
+                </p>
+
+            </div>
+
+            <!-- Data Period -->
+            <div class="data-period">
+
+                <span>
+                    DATA PERIOD
+                </span>
+
+                <strong>
+                    Last 30 Days
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= STATISTICS ================= -->
+
+        <section class="stats-grid">
+
+            <!-- Total Medicines -->
+            <div class="stat-card">
+
+                <div class="stat-icon medicine-icon">
+                    💊
+                </div>
+
+                <div>
+                    <div class="stat-label">
+                        Total Medicines
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_medicines }}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- High Risk -->
+            <div class="stat-card">
+
+                <div class="stat-icon high-icon">
+                    !
+                </div>
+
+                <div>
+                    <div class="stat-label">
+                        High Risk
+                    </div>
+
+                    <div class="stat-value high-text">
+                        {{ high_risk }}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Medium Risk -->
+            <div class="stat-card">
+
+                <div class="stat-icon medium-icon">
+                    !
+                </div>
+
+                <div>
+                    <div class="stat-label">
+                        Medium Risk
+                    </div>
+
+                    <div class="stat-value medium-text">
+                        {{ medium_risk }}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Low Risk -->
+            <div class="stat-card">
+
+                <div class="stat-icon low-icon">
+                    ✓
+                </div>
+
+                <div>
+                    <div class="stat-label">
+                        Low Risk
+                    </div>
+
+                    <div class="stat-value low-text">
+                        {{ low_risk }}
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <section class="toolbar">
+
+            <div class="search-box">
+
+                <span class="search-icon">
+                    🔎
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search medicine..."
+                    onkeyup="searchMedicines()"
+                >
+
+            </div>
+
+            <div class="medicine-count">
+                Showing {{ total_medicines }} medicines
+            </div>
+
+        </section>
+
+
+        <!-- ================= MEDICINE CARDS ================= -->
+
+        <section class="medicine-grid" id="medicineGrid">
+
+            {% for medicine in medicines %}
+
+            <div
+                class="medicine-card"
+                data-name="{{ medicine.name | lower }}"
+            >
+
+                <!-- Card Header -->
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            {{ medicine.name }}
+                        </h2>
+
+                        <p class="medicine-info">
+                            {{ medicine.category }}
+                            •
+                            {{ medicine.dosage_form }}
+                            •
+                            {{ medicine.strength }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- Risk Badge -->
+
+                    {% if medicine.risk == "HIGH" %}
+
+                    <span class="risk high">
+                        HIGH RISK
+                    </span>
+
+                    {% elif medicine.risk == "MEDIUM" %}
+
+                    <span class="risk medium">
+                        MEDIUM RISK
+                    </span>
+
+                    {% else %}
+
+                    <span class="risk low">
+                        LOW RISK
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Stock Information -->
+
+                <div class="medicine-stats">
+
+                    <div>
+
+                        <span>
+                            Current Stock
+                        </span>
+
+                        <strong>
+                            {{ medicine.current_stock }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Daily Usage
+                        </span>
+
+                        <strong>
+                            {{ medicine.average_usage }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Stock Progress -->
+
+                <div class="stock-section">
+
+                    <div class="stock-label">
+
+                        <span>
+                            Stock Level
+                        </span>
+
+                        <span>
+                            {{ medicine.current_stock }}
+                            /
+                            {{ medicine.maximum_stock }}
+                        </span>
+
+                    </div>
+
+
+                    {% if medicine.maximum_stock > 0 %}
+
+                    {% set stock_percentage =
+                    (medicine.current_stock / medicine.maximum_stock * 100) %}
+
+                    {% else %}
+
+                    {% set stock_percentage = 0 %}
+
+                    {% endif %}
+
+
+                    <div class="progress-bar">
+
+                        <div
+                            class="progress-fill
+                            {% if medicine.risk == 'HIGH' %}
+                                progress-high
+                            {% elif medicine.risk == 'MEDIUM' %}
+                                progress-medium
+                            {% else %}
+                                progress-low
+                            {% endif %}"
+                            data-width="{{ stock_percentage }}"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Remaining / Delivery -->
+
+                <div class="medicine-stats">
+
+                    <div>
+
+                        <span>
+                            Stock Remaining
+                        </span>
+
+                        <strong>
+                            {{ medicine.days_remaining | round(1) }} days
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Delivery Time
+                        </span>
+
+                        <strong>
+                            {{ medicine.lead_time }} days
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Supplier -->
+
+                <div class="medicine-details">
+
+                    <div>
+
+                        <span>
+                            Supplier
+                        </span>
+
+                        <strong>
+                            {{ medicine.supplier }}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Unit Price
+                        </span>
+
+                        <strong>
+                            ₹{{ medicine.unit_price }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Risk Alert -->
+
+                {% if medicine.risk == "HIGH" %}
+
+                <div class="alert-box high-alert">
+
+                    <strong>
+                        ⚠ Stockout Risk
+                    </strong>
+
+                    <p>
+                        Current stock may run out before the next
+                        supplier delivery.
+                    </p>
+
+                </div>
+
+                {% elif medicine.risk == "MEDIUM" %}
+
+                <div class="alert-box medium-alert">
+
+                    <strong>
+                        ⚠ Monitor Stock
+                    </strong>
+
+                    <p>
+                        Stock level should be monitored closely.
+                    </p>
+
+                </div>
+
+                {% else %}
+
+                <div class="safe-box">
+
+                    <strong>
+                        ✓ Stock Level Healthy
+                    </strong>
+
+                    <p>
+                        Current inventory is sufficient based on
+                        current usage.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- Reorder Recommendation -->
+
+                {% if medicine.reorder_quantity > 0 %}
+
+                <div class="reorder">
+
+                    <span>
+                        Recommended Reorder
+                    </span>
+
+                    <strong>
+                        {{ medicine.reorder_quantity }} units
+                    </strong>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- Footer -->
+
+                <div class="card-footer">
+
+                    <span>
+                        Last Restocked:
+                        {{ medicine.last_restocked }}
+                    </span>
+
+                    <span>
+                        Expiry:
+                        {{ medicine.expiry_date }}
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </section>
+
+
+        <!-- ================= STOCKOUT RISK ANALYSIS ================= -->
+
+        <section class="risk-analysis">
+
+            <div class="section-heading">
+
+                <div>
+
+                    <div class="section-label">
+                        PREDICTIVE ANALYSIS
+                    </div>
+
+                    <h2>
+                        Stockout Risk Analysis
+                    </h2>
+
+                </div>
+
+                <p>
+                    Medicines are prioritized based on estimated
+                    days remaining and supplier delivery time.
+                </p>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table class="risk-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Medicine
+                            </th>
+
+                            <th>
+                                Current Stock
+                            </th>
+
+                            <th>
+                                Daily Usage
+                            </th>
+
+                            <th>
+                                Days Remaining
+                            </th>
+
+                            <th>
+                                Delivery Time
+                            </th>
+
+                            <th>
+                                Risk
+                            </th>
+
+                            <th>
+                                Recommended Reorder
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for medicine in medicines | sort(attribute='days_remaining') %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ medicine.name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ medicine.current_stock }}
+                            </td>
+
+                            <td>
+                                {{ medicine.average_usage }}
+                            </td>
+
+                            <td>
+                                {{ medicine.days_remaining | round(1) }}
+                            </td>
+
+                            <td>
+                                {{ medicine.lead_time }} days
+                            </td>
+
+                            <td>
+
+                                {% if medicine.risk == "HIGH" %}
+
+                                <span class="table-risk high">
+                                    HIGH
+                                </span>
+
+                                {% elif medicine.risk == "MEDIUM" %}
+
+                                <span class="table-risk medium">
+                                    MEDIUM
+                                </span>
+
+                                {% else %}
+
+                                <span class="table-risk low">
+                                    LOW
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ medicine.reorder_quantity }} units
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        // Search medicines
+        function searchMedicines() {
+
+            const input =
+                document.getElementById("searchInput");
+
+            const searchText =
+                input.value.toLowerCase();
+
+            const cards =
+                document.querySelectorAll(".medicine-card");
+
+            cards.forEach(function(card) {
+
+                const medicineName =
+                    card.getAttribute("data-name");
+
+                if (medicineName.includes(searchText)) {
+
+                    card.style.display = "";
+
+                } else {
+
+                    card.style.display = "none";
+
+                }
+
+            });
+
+        }
+
+
+        // Set progress bar widths
+        document
+            .querySelectorAll(".progress-fill")
+            .forEach(function(bar) {
+
+                const width =
+                    bar.getAttribute("data-width");
+
+                bar.style.width =
+                    Math.min(width, 100) + "%";
+
+            });
+
+    </script>
+
+</body>
+
+</html>
