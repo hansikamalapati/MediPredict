@@ -1,861 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Inventory | MediPredict</title>
-
+    <title>MediPredict - Medicine Inventory</title>
 
     <style>
-
-        /* =====================================================
-           RESET
-        ===================================================== */
-
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
 
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f5f8fa;
-            color: #243b53;
+            background: #f6f9fc;
+            color: #1e293b;
         }
 
-
-        /* =====================================================
-           NAVIGATION
-        ===================================================== */
+        /* ================= NAVBAR ================= */
 
         .navbar {
-            height: 72px;
-            background: #ffffff;
-            border-bottom: 1px solid #dfe7ec;
-            display: flex;
-            align-items: center;
-        }
-
-
-        .nav-container {
-            width: 100%;
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 0 32px;
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
 
+            padding: 0 40px;
+        }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 11px;
+            gap: 10px;
         }
 
-
-        .brand-logo {
+        .brand-icon {
             width: 40px;
             height: 40px;
 
-            background: #176b87;
+            background: #2563eb;
             color: white;
 
-            border-radius: 7px;
+            border-radius: 9px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 19px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: bold;
         }
-
 
         .brand-name {
-            color: #17324d;
-            font-size: 18px;
+            font-size: 21px;
             font-weight: 700;
+            color: #172554;
         }
-
-
-        .brand-subtitle {
-            margin-top: 2px;
-            color: #718096;
-            font-size: 11px;
-        }
-
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
-
 
         .nav-links a {
-            padding: 9px 14px;
-
-            color: #52677a;
             text-decoration: none;
+            color: #64748b;
 
-            font-size: 13px;
-            font-weight: 600;
+            padding: 9px 13px;
+            border-radius: 7px;
 
-            border-radius: 6px;
-
-            transition: 0.2s;
+            font-size: 14px;
+            font-weight: 500;
         }
-
 
         .nav-links a:hover {
-            background: #f0f6f8;
-            color: #176b87;
+            background: #f1f5f9;
+            color: #2563eb;
         }
-
 
         .nav-links a.active {
-            background: #eaf5f8;
-            color: #176b87;
+            background: #eff6ff;
+            color: #2563eb;
+            font-weight: 600;
         }
 
+        /* LOGOUT */
 
-        /* =====================================================
-           PAGE
-        ===================================================== */
+        .logout-btn {
+            background: #fee2e2 !important;
+            color: #dc2626 !important;
 
-        .page {
-            max-width: 1450px;
-            margin: 0 auto;
+            padding: 9px 15px !important;
 
-            padding: 34px 32px 60px;
+            border-radius: 8px !important;
+
+            font-weight: 600 !important;
+
+            margin-left: 8px;
         }
 
+        .logout-btn:hover {
+            background: #fecaca !important;
+            color: #b91c1c !important;
+        }
 
-        /* =====================================================
-           PAGE HEADER
-        ===================================================== */
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 35px 40px;
+        }
 
         .page-header {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: space-between;
 
-            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            color: #172554;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+
+            text-decoration: none;
+
+            padding: 11px 17px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* ================= SUMMARY CARDS ================= */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
 
             margin-bottom: 25px;
         }
 
-
-        .page-title h1 {
-            margin: 0 0 6px;
-
-            color: #17324d;
-
-            font-size: 29px;
-            font-weight: 700;
-        }
-
-
-        .page-title p {
-            margin: 0;
-
-            color: #718096;
-
-            font-size: 14px;
-        }
-
-
-        .add-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-
-            height: 42px;
-
-            padding: 0 18px;
-
-            background: #176b87;
-            color: white;
-
-            border-radius: 6px;
-
-            text-decoration: none;
-
-            font-size: 13px;
-            font-weight: 600;
-
-            box-shadow: 0 2px 5px rgba(23, 107, 135, 0.15);
-
-            transition: 0.2s;
-        }
-
-
-        .add-button:hover {
-            background: #12566d;
-            transform: translateY(-1px);
-        }
-
-
-        /* =====================================================
-           SUMMARY CARDS
-        ===================================================== */
-
-        .summary-grid {
-            display: grid;
-
-            grid-template-columns:
-                repeat(4, 1fr);
-
-            gap: 17px;
-
-            margin-bottom: 24px;
-        }
-
-
         .summary-card {
-            min-height: 112px;
-
-            padding: 20px 21px;
-
             background: white;
 
-            border: 1px solid #dfe7ec;
-            border-radius: 9px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
 
-            box-shadow:
-                0 2px 8px rgba(15, 35, 55, 0.04);
+            padding: 20px;
         }
-
-
-        .summary-card.total {
-            border-left: 4px solid #176b87;
-        }
-
-
-        .summary-card.high {
-            border-left: 4px solid #dc3545;
-        }
-
-
-        .summary-card.medium {
-            border-left: 4px solid #d08a00;
-        }
-
-
-        .summary-card.low {
-            border-left: 4px solid #2d8a4e;
-        }
-
 
         .summary-label {
-            margin-bottom: 9px;
-
-            color: #718096;
-
-            font-size: 11px;
-            font-weight: 700;
-
-            text-transform: uppercase;
-
-            letter-spacing: 0.6px;
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 8px;
         }
-
 
         .summary-value {
-            color: #17324d;
-
-            font-size: 29px;
+            font-size: 28px;
             font-weight: 700;
         }
 
+        .total {
+            color: #2563eb;
+        }
 
-        /* =====================================================
-           INVENTORY CARD
-        ===================================================== */
+        .critical {
+            color: #dc2626;
+        }
+
+        .warning {
+            color: #d97706;
+        }
+
+        .normal {
+            color: #16a34a;
+        }
+
+        /* ================= INVENTORY CARD ================= */
 
         .inventory-card {
             background: white;
 
-            border: 1px solid #dfe7ec;
-            border-radius: 10px;
-
-            box-shadow:
-                0 2px 10px rgba(15, 35, 55, 0.05);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
 
             overflow: hidden;
         }
 
+        .inventory-header {
+            padding: 20px 22px;
 
-        .inventory-card-header {
-            padding: 21px 24px;
+            border-bottom: 1px solid #e2e8f0;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            border-bottom: 1px solid #e5edf1;
         }
 
-
-        .inventory-card-title h2 {
-            margin: 0 0 5px;
-
-            color: #17324d;
-
+        .inventory-header h2 {
             font-size: 18px;
+            color: #172554;
         }
 
-
-        .inventory-card-title p {
-            margin: 0;
-
-            color: #718096;
-
-            font-size: 12px;
-        }
-
-
-        .medicine-count {
-            padding: 6px 10px;
-
-            background: #f1f7f9;
-
-            border-radius: 5px;
-
-            color: #176b87;
-
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-
-        /* =====================================================
-           TOOLS
-        ===================================================== */
-
-        .tools {
-            padding: 17px 24px;
-
+        .filters {
             display: flex;
-            align-items: center;
-
-            gap: 10px;
-
-            background: #fbfcfd;
-
-            border-bottom: 1px solid #e5edf1;
+            gap: 12px;
         }
 
+        .search-box,
+        .risk-filter {
+            padding: 10px 12px;
 
-        .search-wrapper {
-            position: relative;
-
-            width: 320px;
-        }
-
-
-        .search-icon {
-            position: absolute;
-
-            left: 12px;
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            color: #8b9aa8;
-
-            font-size: 14px;
-        }
-
-
-        .search-input {
-            width: 100%;
-            height: 40px;
-
-            padding: 0 12px 0 34px;
-
-            border: 1px solid #cbd7df;
-            border-radius: 6px;
-
-            background: white;
-
-            color: #243b53;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
 
             font-size: 13px;
 
             outline: none;
-        }
-
-
-        .search-input:focus {
-            border-color: #176b87;
-
-            box-shadow:
-                0 0 0 3px rgba(23, 107, 135, 0.08);
-        }
-
-
-        .risk-select {
-            height: 40px;
-
-            padding: 0 30px 0 12px;
-
-            border: 1px solid #cbd7df;
-            border-radius: 6px;
-
             background: white;
-
-            color: #52677a;
-
-            font-size: 13px;
-
-            outline: none;
-
-            cursor: pointer;
         }
 
-
-        .risk-select:focus {
-            border-color: #176b87;
+        .search-box {
+            width: 220px;
         }
 
+        .search-box:focus,
+        .risk-filter:focus {
+            border-color: #2563eb;
+        }
 
-        /* =====================================================
-           TABLE
-        ===================================================== */
+        /* ================= TABLE ================= */
 
-        .table-wrapper {
-            width: 100%;
-
+        .table-container {
             overflow-x: auto;
         }
 
-
-        .inventory-table {
+        table {
             width: 100%;
-
-            min-width: 1100px;
-
             border-collapse: collapse;
         }
 
+        th {
+            background: #f8fafc;
 
-        .inventory-table th {
-            padding: 14px 18px;
+            color: #64748b;
 
-            background: #f7fafb;
-
-            border-bottom: 1px solid #dfe7ec;
-
-            color: #607487;
-
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 12px;
+            font-weight: 600;
 
             text-align: left;
 
-            text-transform: uppercase;
-
-            letter-spacing: 0.45px;
+            padding: 14px 18px;
 
             white-space: nowrap;
         }
 
+        td {
+            padding: 17px 18px;
 
-        .inventory-table td {
-            padding: 15px 18px;
-
-            border-bottom: 1px solid #edf1f3;
-
-            color: #334e68;
+            border-top: 1px solid #f1f5f9;
 
             font-size: 13px;
 
-            vertical-align: middle;
+            white-space: nowrap;
         }
 
-
-        .inventory-table tbody tr {
-            transition: background 0.15s;
+        tbody tr:hover {
+            background: #f8fafc;
         }
-
-
-        .inventory-table tbody tr:hover {
-            background: #fafcfd;
-        }
-
-
-        .inventory-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-
-        /* =====================================================
-           MEDICINE
-        ===================================================== */
 
         .medicine-name {
-            margin-bottom: 4px;
-
-            color: #17324d;
-
-            font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
+            color: #172554;
         }
 
-
-        .medicine-strength {
-            color: #8292a2;
-
-            font-size: 11px;
+        .supplier {
+            color: #64748b;
         }
 
+        /* ================= STOCK BAR ================= */
 
-        /* =====================================================
-           STOCK
-        ===================================================== */
-
-        .stock-number {
-            color: #263b50;
-
-            font-weight: 700;
+        .stock-container {
+            width: 100px;
         }
-
 
         .stock-bar {
-            width: 95px;
-            height: 5px;
+            width: 100%;
+            height: 6px;
 
-            margin-top: 7px;
+            background: #e2e8f0;
 
-            background: #e6edf1;
-
-            border-radius: 20px;
+            border-radius: 10px;
 
             overflow: hidden;
-        }
 
+            margin-top: 5px;
+        }
 
         .stock-fill {
             height: 100%;
 
-            border-radius: 20px;
+            border-radius: 10px;
+
+            width: 0%;
         }
-
-
-        .stock-good {
-            background: #2d8a4e;
-        }
-
-
-        .stock-medium {
-            background: #d08a00;
-        }
-
 
         .stock-high {
-            background: #dc3545;
+            background: #22c55e;
         }
 
-
-        /* =====================================================
-           DEMAND
-        ===================================================== */
-
-        .demand {
-            color: #176b87;
-
-            font-weight: 700;
+        .stock-medium {
+            background: #f59e0b;
         }
 
-
-        .unit {
-            margin-left: 2px;
-
-            color: #8292a2;
-
-            font-size: 11px;
+        .stock-low {
+            background: #ef4444;
         }
 
-
-        /* =====================================================
-           DAYS
-        ===================================================== */
-
-        .days {
-            color: #263b50;
-
-            font-weight: 700;
-        }
-
-
-        /* =====================================================
-           RISK BADGES
-        ===================================================== */
+        /* ================= RISK ================= */
 
         .risk {
             display: inline-flex;
 
-            align-items: center;
-
-            gap: 6px;
-
             padding: 5px 9px;
 
-            border-radius: 5px;
+            border-radius: 20px;
 
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 700;
-
-            letter-spacing: 0.2px;
         }
-
-
-        .risk-dot {
-            width: 6px;
-            height: 6px;
-
-            border-radius: 50%;
-        }
-
 
         .risk-high {
-            background: #fff0f1;
-            color: #b42333;
+            background: #fee2e2;
+            color: #dc2626;
         }
-
-
-        .risk-high .risk-dot {
-            background: #dc3545;
-        }
-
 
         .risk-medium {
-            background: #fff8e8;
-            color: #946200;
+            background: #fef3c7;
+            color: #d97706;
         }
-
-
-        .risk-medium .risk-dot {
-            background: #d08a00;
-        }
-
 
         .risk-low {
-            background: #edf8f0;
-            color: #23723e;
+            background: #dcfce7;
+            color: #16a34a;
         }
 
-
-        .risk-low .risk-dot {
-            background: #2d8a4e;
-        }
-
-
-        /* =====================================================
-           REORDER
-        ===================================================== */
+        /* ================= REORDER ================= */
 
         .reorder {
-            color: #b42333;
-
+            color: #2563eb;
             font-weight: 700;
         }
 
-
-        .not-required {
-            color: #2d8a4e;
-
-            font-size: 11px;
-            font-weight: 600;
+        .no-reorder {
+            color: #94a3b8;
         }
 
+        /* ================= RESPONSIVE ================= */
 
-        /* =====================================================
-           EMPTY
-        ===================================================== */
+        @media (max-width: 1000px) {
 
-        .empty-row {
-            padding: 50px !important;
-
-            text-align: center;
-
-            color: #8292a2 !important;
-        }
-
-
-        /* =====================================================
-           FOOTER
-        ===================================================== */
-
-        .table-footer {
-            padding: 13px 24px;
-
-            border-top: 1px solid #e5edf1;
-
-            background: #fbfcfd;
-
-            color: #8292a2;
-
-            font-size: 11px;
-        }
-
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 900px) {
-
-            .nav-container {
-                padding: 0 18px;
+            .navbar {
+                padding: 0 20px;
             }
 
-            .nav-links {
-                display: none;
-            }
-
-            .page {
-                padding: 25px 18px 45px;
+            .container {
+                padding: 25px 20px;
             }
 
             .summary-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .page-header {
-                align-items: flex-start;
-
-                flex-direction: column;
+            .nav-links {
+                gap: 2px;
             }
 
-            .add-button {
-                width: 100%;
+            .nav-links a {
+                padding: 8px;
             }
-
-            .search-wrapper {
-                width: 100%;
-            }
-
-            .tools {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .risk-select {
-                width: 100%;
-            }
-
         }
 
+        @media (max-width: 700px) {
 
-        @media (max-width: 550px) {
+            .navbar {
+                height: auto;
+                padding: 15px;
+
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
 
             .summary-grid {
                 grid-template-columns: 1fr;
             }
 
-            .page-title h1 {
-                font-size: 25px;
+            .inventory-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
 
+            .filters {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .search-box {
+                width: 100%;
+            }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     NAVIGATION
-====================================================== -->
+<!-- ================= NAVBAR ================= -->
 
 <nav class="navbar">
 
-    <div class="nav-container">
+    <div class="brand">
 
-
-        <!-- BRAND -->
-
-        <div class="brand">
-
-            <div class="brand-logo">
-                M
-            </div>
-
-            <div>
-
-                <div class="brand-name">
-                    MediPredict
-                </div>
-
-                <div class="brand-subtitle">
-                    Medicine Inventory & Stockout Prevention
-                </div>
-
-            </div>
-
+        <div class="brand-icon">
+            M
         </div>
 
-
-        <!-- NAVIGATION LINKS -->
-
-        <div class="nav-links">
-
-            <a href="/">
-                Dashboard
-            </a>
-
-            <a href="/medicines" class="active">
-                Inventory
-            </a>
-
-            <a href="/predictions">
-                Predictions
-            </a>
-
-            <a href="/analytics">
-                Analytics
-            </a>
-
-            <a href="/alerts">
-                Alerts
-            </a>
-
+        <div class="brand-name">
+            MediPredict
         </div>
 
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Dashboard
+        </a>
+
+        <a href="/medicines" class="active">
+            Inventory
+        </a>
+
+        <a href="/predictions">
+            Predictions
+        </a>
+
+        <a href="/analytics">
+            Analytics
+        </a>
+
+        <a href="/alerts">
+            Alerts
+        </a>
+
+        <!-- LOGOUT BUTTON -->
+
+        <a href="/logout" class="logout-btn">
+            Logout
+        </a>
 
     </div>
 
 </nav>
 
 
+<!-- ================= MAIN CONTENT ================= -->
 
-<!-- =====================================================
-     PAGE
-====================================================== -->
+<main class="container">
 
-<main class="page">
-
-
-    <!-- =================================================
-         HEADER
-    ================================================== -->
+    <!-- PAGE HEADER -->
 
     <div class="page-header">
-
 
         <div class="page-title">
 
@@ -864,62 +516,43 @@
             </h1>
 
             <p>
-                Monitor stock levels, demand and potential stockouts.
+                Monitor medicine stock, demand and stockout risk.
             </p>
 
         </div>
 
 
-        <a href="/add-medicine"
-           class="add-button">
-
-            <span style="font-size:17px;">
-                +
-            </span>
-
-            Add Medicine
-
+        <a href="/add-medicine" class="add-btn">
+            + Add Medicine
         </a>
-
 
     </div>
 
 
-
-    <!-- =================================================
-         SUMMARY
-    ================================================== -->
+    <!-- ================= SUMMARY ================= -->
 
     <div class="summary-grid">
 
-
-        <!-- TOTAL -->
-
-        <div class="summary-card total">
+        <div class="summary-card">
 
             <div class="summary-label">
                 Total Medicines
             </div>
 
-            <div class="summary-value">
-
+            <div class="summary-value total">
                 {{ medicines|length }}
-
             </div>
 
         </div>
 
 
-
-        <!-- HIGH -->
-
-        <div class="summary-card high">
+        <div class="summary-card">
 
             <div class="summary-label">
                 Critical Risk
             </div>
 
-            <div class="summary-value">
+            <div class="summary-value critical">
 
                 {{
                     medicines
@@ -933,16 +566,13 @@
         </div>
 
 
-
-        <!-- MEDIUM -->
-
-        <div class="summary-card medium">
+        <div class="summary-card">
 
             <div class="summary-label">
                 At Risk
             </div>
 
-            <div class="summary-value">
+            <div class="summary-value warning">
 
                 {{
                     medicines
@@ -956,16 +586,13 @@
         </div>
 
 
-
-        <!-- LOW -->
-
-        <div class="summary-card low">
+        <div class="summary-card">
 
             <div class="summary-label">
                 Normal
             </div>
 
-            <div class="summary-value">
+            <div class="summary-value normal">
 
                 {{
                     medicines
@@ -978,105 +605,63 @@
 
         </div>
 
-
     </div>
 
 
+    <!-- ================= INVENTORY ================= -->
 
-    <!-- =================================================
-         INVENTORY CARD
-    ================================================== -->
+    <div class="inventory-card">
 
-    <section class="inventory-card">
+        <div class="inventory-header">
 
-
-        <!-- CARD HEADER -->
-
-        <div class="inventory-card-header">
+            <h2>
+                Current Inventory
+            </h2>
 
 
-            <div class="inventory-card-title">
-
-                <h2>
-                    Current Inventory
-                </h2>
-
-                <p>
-                    Stock availability and ML-based demand forecast
-                </p>
-
-            </div>
-
-
-            <div class="medicine-count">
-
-                {{ medicines|length }} medicines
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- =================================================
-             SEARCH / FILTER
-        ================================================== -->
-
-        <div class="tools">
-
-
-            <div class="search-wrapper">
-
-                <span class="search-icon">
-                    🔍
-                </span>
+            <div class="filters">
 
                 <input
                     type="text"
                     id="medicineSearch"
-                    class="search-input"
+                    class="search-box"
                     placeholder="Search medicine..."
                 >
 
+
+                <select
+                    id="riskFilter"
+                    class="risk-filter"
+                >
+
+                    <option value="ALL">
+                        All Risk Levels
+                    </option>
+
+                    <option value="HIGH">
+                        High Risk
+                    </option>
+
+                    <option value="MEDIUM">
+                        Medium Risk
+                    </option>
+
+                    <option value="LOW">
+                        Low Risk
+                    </option>
+
+                </select>
+
             </div>
-
-
-            <select
-                id="riskFilter"
-                class="risk-select">
-
-                <option value="ALL">
-                    All Risk Levels
-                </option>
-
-                <option value="HIGH">
-                    High Risk
-                </option>
-
-                <option value="MEDIUM">
-                    Medium Risk
-                </option>
-
-                <option value="LOW">
-                    Low Risk
-                </option>
-
-            </select>
-
 
         </div>
 
 
+        <!-- ================= TABLE ================= -->
 
-        <!-- =================================================
-             TABLE
-        ================================================== -->
+        <div class="table-container">
 
-        <div class="table-wrapper">
-
-            <table class="inventory-table">
-
+            <table>
 
                 <thead>
 
@@ -1123,12 +708,9 @@
                 </thead>
 
 
-
                 <tbody>
 
-
-                {% for medicine in medicines %}
-
+                    {% for medicine in medicines %}
 
                     <tr
                         class="medicine-row"
@@ -1136,294 +718,194 @@
                         data-risk="{{ medicine.risk }}"
                     >
 
-
                         <!-- MEDICINE -->
 
                         <td>
 
                             <div class="medicine-name">
-
                                 {{ medicine.name }}
-
                             </div>
 
-
-                            {% if medicine.strength %}
-
-                                <div class="medicine-strength">
-
-                                    {{ medicine.strength }}
-
-                                </div>
-
-                            {% endif %}
-
                         </td>
-
 
 
                         <!-- CURRENT STOCK -->
 
                         <td>
 
-                            <div class="stock-number">
+                            <div class="stock-container">
 
-                                {{ medicine.current_stock }} units
+                                <strong>
+                                    {{ medicine.current_stock }}
+                                </strong>
 
-                            </div>
+                                <div class="stock-bar">
 
+                                    {% if medicine.current_stock <= medicine.minimum_stock %}
 
-                            <div class="stock-bar">
+                                        <div
+                                            class="stock-fill stock-low"
+                                            data-stock="{{ medicine.current_stock }}"
+                                            data-maximum="{{ medicine.maximum_stock or 1000 }}"
+                                        ></div>
 
+                                    {% elif medicine.current_stock <= medicine.minimum_stock * 2 %}
 
-                                {% if medicine.risk == "HIGH" %}
+                                        <div
+                                            class="stock-fill stock-medium"
+                                            data-stock="{{ medicine.current_stock }}"
+                                            data-maximum="{{ medicine.maximum_stock or 1000 }}"
+                                        ></div>
 
-                                    {% set stock_class = "stock-high" %}
+                                    {% else %}
 
-                                {% elif medicine.risk == "MEDIUM" %}
+                                        <div
+                                            class="stock-fill stock-high"
+                                            data-stock="{{ medicine.current_stock }}"
+                                            data-maximum="{{ medicine.maximum_stock or 1000 }}"
+                                        ></div>
 
-                                    {% set stock_class = "stock-medium" %}
+                                    {% endif %}
 
-                                {% else %}
-
-                                    {% set stock_class = "stock-good" %}
-
-                                {% endif %}
-
-
-                                <div
-                                    class="stock-fill {{ stock_class }}"
-                                    data-stock="{{ medicine.current_stock }}"
-                                    data-maximum="{{ medicine.maximum_stock or 1000 }}"
-                                >
                                 </div>
-
 
                             </div>
 
                         </td>
-
 
 
                         <!-- MINIMUM STOCK -->
 
                         <td>
-
                             {{ medicine.minimum_stock }}
-
                         </td>
-
 
 
                         <!-- PREDICTED DEMAND -->
 
                         <td>
 
-                            <span class="demand">
-
+                            <strong>
                                 {{ medicine.average_usage }}
+                            </strong>
 
-                            </span>
-
-                            <span class="unit">
-
-                                units/day
-
-                            </span>
+                            /day
 
                         </td>
 
 
-
-                        <!-- DAYS -->
+                        <!-- DAYS REMAINING -->
 
                         <td>
 
-                            <span class="days">
-
+                            <strong>
                                 {{ medicine.days_remaining }}
+                            </strong>
 
-                            </span>
-
-                            <span class="unit">
-
-                                days
-
-                            </span>
+                            days
 
                         </td>
-
 
 
                         <!-- LEAD TIME -->
 
                         <td>
 
-                            {{ medicine.lead_time }} days
+                            {{ medicine.lead_time }}
+                            days
 
                         </td>
 
 
-
                         <!-- SUPPLIER -->
 
-                        <td>
+                        <td class="supplier">
 
                             {{ medicine.supplier }}
 
                         </td>
 
 
-
                         <!-- RISK -->
 
                         <td>
 
-
                             {% if medicine.risk == "HIGH" %}
 
                                 <span class="risk risk-high">
-
-                                    <span class="risk-dot"></span>
-
                                     HIGH
-
                                 </span>
-
 
                             {% elif medicine.risk == "MEDIUM" %}
 
                                 <span class="risk risk-medium">
-
-                                    <span class="risk-dot"></span>
-
                                     MEDIUM
-
                                 </span>
-
 
                             {% else %}
 
                                 <span class="risk risk-low">
-
-                                    <span class="risk-dot"></span>
-
                                     LOW
-
                                 </span>
 
                             {% endif %}
 
-
                         </td>
-
 
 
                         <!-- REORDER -->
 
                         <td>
 
-
                             {% if medicine.reorder_quantity > 0 %}
 
                                 <span class="reorder">
-
                                     +{{ medicine.reorder_quantity }}
-
                                 </span>
-
 
                             {% else %}
 
-                                <span class="not-required">
-
-                                    Not required
-
+                                <span class="no-reorder">
+                                    No reorder
                                 </span>
 
                             {% endif %}
 
-
-                        </td>
-
-
-                    </tr>
-
-
-                {% else %}
-
-
-                    <tr>
-
-                        <td
-                            colspan="9"
-                            class="empty-row">
-
-                            No medicines found.
-
                         </td>
 
                     </tr>
 
-
-                {% endfor %}
-
+                    {% endfor %}
 
                 </tbody>
-
 
             </table>
 
         </div>
 
-
-
-        <!-- TABLE FOOTER -->
-
-        <div class="table-footer">
-
-            Showing
-            <strong>{{ medicines|length }}</strong>
-            medicines currently being monitored.
-
-        </div>
-
-
-    </section>
-
+    </div>
 
 </main>
 
 
-
-<!-- =====================================================
-     JAVASCRIPT
-====================================================== -->
+<!-- ================= JAVASCRIPT ================= -->
 
 <script>
 
-
-    /* =====================================================
-       STOCK BAR
-    ===================================================== */
+    /* ================= STOCK BARS ================= */
 
     const stockBars =
         document.querySelectorAll(".stock-fill");
 
-
     stockBars.forEach(function(bar) {
-
 
         const stock =
             Number(bar.dataset.stock);
 
-
         const maximum =
             Number(bar.dataset.maximum);
 
-
         let percentage = 0;
-
 
         if (maximum > 0) {
 
@@ -1432,59 +914,38 @@
 
         }
 
-
         if (percentage > 100) {
-
             percentage = 100;
-
         }
-
 
         if (percentage < 0) {
-
             percentage = 0;
-
         }
-
 
         bar.style.width =
             percentage + "%";
 
-
     });
 
 
-
-    /* =====================================================
-       SEARCH + FILTER
-    ===================================================== */
+    /* ================= SEARCH + FILTER ================= */
 
     const searchInput =
-        document.getElementById(
-            "medicineSearch"
-        );
-
+        document.getElementById("medicineSearch");
 
     const riskFilter =
-        document.getElementById(
-            "riskFilter"
-        );
-
+        document.getElementById("riskFilter");
 
     const rows =
-        document.querySelectorAll(
-            ".medicine-row"
-        );
+        document.querySelectorAll(".medicine-row");
 
 
     function filterMedicines() {
-
 
         const search =
             searchInput.value
             .toLowerCase()
             .trim();
-
 
         const selectedRisk =
             riskFilter.value;
@@ -1492,10 +953,8 @@
 
         rows.forEach(function(row) {
 
-
             const medicineName =
                 row.dataset.name;
-
 
             const medicineRisk =
                 row.dataset.risk;
@@ -1503,7 +962,6 @@
 
             const matchesSearch =
                 medicineName.includes(search);
-
 
             const matchesRisk =
                 selectedRisk === "ALL" ||
@@ -1517,17 +975,13 @@
 
                 row.style.display = "";
 
-            }
-
-            else {
+            } else {
 
                 row.style.display = "none";
 
             }
 
-
         });
-
 
     }
 
@@ -1543,10 +997,7 @@
         filterMedicines
     );
 
-
 </script>
 
-
 </body>
-
 </html>

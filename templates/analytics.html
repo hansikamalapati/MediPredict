@@ -10,167 +10,393 @@
 
     <title>MediPredict | Analytics</title>
 
+    <!-- Main CSS -->
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
 
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        /* =====================================================
+           ANALYTICS PAGE
+        ===================================================== */
+
+        .analytics-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            margin-bottom: 24px;
+        }
+
+
+        .analytics-card-header {
+            padding: 22px 24px 12px;
+        }
+
+
+        .analytics-card-title {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+            color: #172554;
+        }
+
+
+        .analytics-card-subtitle {
+            margin: 6px 0 0;
+            font-size: 14px;
+            color: #64748b;
+        }
+
+
+        .analytics-chart {
+            position: relative;
+            height: 400px;
+            padding: 10px 20px 25px;
+        }
+
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .analytics-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+
+        .analytics-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+
+        .analytics-table th {
+            text-align: left;
+            padding: 16px 20px;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+
+        .analytics-table td {
+            padding: 17px 20px;
+            color: #1e293b;
+            font-size: 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+
+        .analytics-table tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        .analytics-medicine {
+            font-weight: 700;
+            color: #172554;
+        }
+
+
+        .analytics-demand {
+            font-weight: 700;
+            color: #172554;
+        }
+
+
+        .analytics-days {
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           RISK COLORS
+        ===================================================== */
+
+        .risk-high {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+
+        .risk-medium {
+            color: #d97706;
+            font-weight: 700;
+        }
+
+
+        .risk-low {
+            color: #16a34a;
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .analytics-footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .analytics-chart {
+                height: 320px;
+            }
+
+            .analytics-table th,
+            .analytics-table td {
+                white-space: nowrap;
+                padding: 12px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 
 <body>
 
-<header class="topbar">
 
-    <div class="brand">
+    <!-- =====================================================
+         NAVBAR
+    ===================================================== -->
 
-        <div class="brand-icon">
-            M
-        </div>
+    <nav class="navbar">
 
-        <div>
 
-            <div class="brand-name">
-                MediPredict
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                M
             </div>
 
-            <span class="brand-subtitle">
-                Medicine Inventory & Stockout Prevention
-            </span>
+
+            <div>
+
+                <div class="brand-name">
+                    MediPredict
+                </div>
+
+
+                <div class="brand-subtitle">
+                    Medicine Inventory &amp; Stockout Prevention
+                </div>
+
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- NAVIGATION -->
+
+        <div class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
 
 
-    <nav class="nav">
+            <a href="/medicines">
+                Inventory
+            </a>
 
-        <a href="/">
-            Dashboard
-        </a>
 
-        <a href="/medicines">
-            Inventory
-        </a>
+            <a href="/predictions">
+                Predictions
+            </a>
 
-        <a href="/predictions">
-            Predictions
-        </a>
 
-        <a href="/analytics" class="active">
-            Analytics
-        </a>
+            <a href="/analytics"
+               class="active">
+                Analytics
+            </a>
 
-        <a href="/alerts">
-            Alerts
-        </a>
+
+            <a href="/alerts">
+                Alerts
+            </a>
+
+
+            <a href="/logout"
+               class="logout-btn">
+                Logout
+            </a>
+
+        </div>
 
     </nav>
 
-</header>
 
 
-<main class="page">
+    <!-- =====================================================
+         MAIN CONTENT
+    ===================================================== -->
 
-    <div class="page-header">
-
-        <div>
-
-            <h1 class="page-title">
-                Inventory Analytics
-            </h1>
-
-            <p class="page-description">
-                Overview of medicine demand and stockout risk.
-            </p>
-
-        </div>
-
-    </div>
+    <main class="main-container">
 
 
-    <!-- SUMMARY -->
+        <!-- PAGE HEADER -->
 
-    <div class="summary-grid">
+        <div class="page-header">
 
-        <div class="summary-card primary">
+            <div>
 
-            <div class="summary-label">
-                Total Medicines
-            </div>
+                <h1>
+                    Inventory Analytics
+                </h1>
 
-            <div class="summary-value">
-                {{ total_medicines }}
+
+                <p>
+                    Overview of medicine demand and stockout risk.
+                </p>
+
             </div>
 
         </div>
 
 
-        <div class="summary-card critical">
 
-            <div class="summary-label">
-                High Risk
-            </div>
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
 
-            <div class="summary-value">
-                {{ high_risk }}
-            </div>
-
-        </div>
+        <div class="summary-grid">
 
 
-        <div class="summary-card warning">
+            <!-- TOTAL -->
 
-            <div class="summary-label">
-                Medium Risk
-            </div>
+            <div class="summary-card">
 
-            <div class="summary-value">
-                {{ medium_risk }}
-            </div>
-
-        </div>
+                <div class="summary-label">
+                    Total Medicines
+                </div>
 
 
-        <div class="summary-card normal">
-
-            <div class="summary-label">
-                Low Risk
-            </div>
-
-            <div class="summary-value">
-                {{ low_risk }}
-            </div>
-
-        </div>
-
-    </div>
+                <div class="summary-number">
+                    {{ total_medicines }}
+                </div>
 
 
-    <!-- CHARTS -->
-
-    <div class="chart-grid">
-
-        <section class="section">
-
-            <div class="section-header">
-
-                <div>
-
-                    <div class="section-title">
-                        Current Stock
-                    </div>
-
-                    <div class="section-subtitle">
-                        Units currently available
-                    </div>
-
+                <div class="summary-description">
+                    Being monitored
                 </div>
 
             </div>
 
 
-            <div class="section-body chart-box">
+
+            <!-- HIGH RISK -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    High Risk
+                </div>
+
+
+                <div class="summary-number high-risk-number">
+                    {{ high_risk }}
+                </div>
+
+
+                <div class="summary-description high-risk-text">
+                    Immediate attention
+                </div>
+
+            </div>
+
+
+
+            <!-- MEDIUM RISK -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Medium Risk
+                </div>
+
+
+                <div class="summary-number medium-risk-number">
+                    {{ medium_risk }}
+                </div>
+
+
+                <div class="summary-description medium-risk-text">
+                    Monitor closely
+                </div>
+
+            </div>
+
+
+
+            <!-- LOW RISK -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Low Risk
+                </div>
+
+
+                <div class="summary-number low-risk-number">
+                    {{ low_risk }}
+                </div>
+
+
+                <div class="summary-description low-risk-text">
+                    No immediate action
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CURRENT STOCK
+        ================================================== -->
+
+        <section class="analytics-card">
+
+
+            <div class="analytics-card-header">
+
+                <h2 class="analytics-card-title">
+                    Current Stock
+                </h2>
+
+
+                <p class="analytics-card-subtitle">
+                    Units currently available
+                </p>
+
+            </div>
+
+
+            <div class="analytics-chart">
 
                 <canvas id="stockChart"></canvas>
 
@@ -179,26 +405,29 @@
         </section>
 
 
-        <section class="section">
 
-            <div class="section-header">
+        <!-- =================================================
+             PREDICTED DAILY DEMAND
+        ================================================== -->
 
-                <div>
+        <section class="analytics-card">
 
-                    <div class="section-title">
-                        Predicted Daily Demand
-                    </div>
 
-                    <div class="section-subtitle">
-                        ML-based demand forecast
-                    </div>
+            <div class="analytics-card-header">
 
-                </div>
+                <h2 class="analytics-card-title">
+                    Predicted Daily Demand
+                </h2>
+
+
+                <p class="analytics-card-subtitle">
+                    ML-based demand forecast
+                </p>
 
             </div>
 
 
-            <div class="section-body chart-box">
+            <div class="analytics-chart">
 
                 <canvas id="demandChart"></canvas>
 
@@ -206,303 +435,553 @@
 
         </section>
 
-    </div>
 
 
-    <!-- RISK CHART -->
+        <!-- =================================================
+             RISK DISTRIBUTION
+        ================================================== -->
 
-    <section class="section">
+        <section class="analytics-card">
 
-        <div class="section-header">
 
-            <div>
+            <div class="analytics-card-header">
 
-                <div class="section-title">
+                <h2 class="analytics-card-title">
                     Stockout Risk Distribution
-                </div>
+                </h2>
 
-                <div class="section-subtitle">
+
+                <p class="analytics-card-subtitle">
                     Current risk classification across medicines
-                </div>
+                </p>
 
             </div>
 
-        </div>
 
+            <div class="analytics-chart">
 
-        <div class="section-body chart-box">
+                <canvas id="riskChart"></canvas>
 
-            <canvas id="riskChart"></canvas>
-
-        </div>
-
-    </section>
-
-
-    <!-- TABLE -->
-
-    <section class="section">
-
-        <div class="section-header">
-
-            <div class="section-title">
-                Consumption Summary
             </div>
 
-        </div>
+        </section>
 
 
-        <div class="section-body">
 
-            <div class="table-wrapper">
+        <!-- =================================================
+             CONSUMPTION SUMMARY
+        ================================================== -->
 
-                <table class="data-table">
+        <section class="analytics-card">
+
+
+            <div class="analytics-card-header">
+
+                <h2 class="analytics-card-title">
+                    Consumption Summary
+                </h2>
+
+            </div>
+
+
+            <div class="analytics-table-wrapper">
+
+
+                <table class="analytics-table">
+
 
                     <thead>
 
                         <tr>
 
-                            <th>Medicine</th>
-                            <th>Current Stock</th>
-                            <th>Predicted Demand</th>
-                            <th>Days Remaining</th>
-                            <th>Risk</th>
+                            <th>
+                                Medicine
+                            </th>
+
+
+                            <th>
+                                Current Stock
+                            </th>
+
+
+                            <th>
+                                Predicted Demand
+                            </th>
+
+
+                            <th>
+                                Days Remaining
+                            </th>
+
+
+                            <th>
+                                Risk
+                            </th>
 
                         </tr>
 
                     </thead>
 
 
+
                     <tbody>
 
-                    {% for medicine in medicines %}
+
+                        {% for medicine in medicines %}
+
 
                         <tr>
 
-                            <td class="medicine-name">
-                                {{ medicine.name }}
+
+                            <!-- MEDICINE -->
+
+                            <td>
+
+                                <span class="analytics-medicine">
+                                    {{ medicine.name }}
+                                </span>
+
                             </td>
+
+
+
+                            <!-- CURRENT STOCK -->
 
                             <td>
                                 {{ medicine.current_stock }}
                             </td>
 
-                            <td>
-                                {{ medicine.average_usage }}
-                                /day
-                            </td>
+
+
+                            <!-- PREDICTED DEMAND -->
 
                             <td>
-                                {{ medicine.days_remaining }}
+
+                                <span class="analytics-demand">
+
+                                    {{ "%.1f"|format(
+                                        medicine.predicted_demand
+                                    ) }}
+
+                                </span>
+
+                                units/day
+
                             </td>
 
+
+
+                            <!-- DAYS REMAINING -->
+
                             <td>
+
+                                <span class="analytics-days">
+                                    {{ medicine.days_remaining }}
+                                </span>
+
+                                days
+
+                            </td>
+
+
+
+                            <!-- RISK -->
+
+                            <td>
+
 
                                 {% if medicine.risk == "HIGH" %}
 
-                                    <span class="status status-high">
+                                    <span class="risk-high">
                                         HIGH
                                     </span>
 
+
                                 {% elif medicine.risk == "MEDIUM" %}
 
-                                    <span class="status status-medium">
+                                    <span class="risk-medium">
                                         MEDIUM
                                     </span>
 
+
                                 {% else %}
 
-                                    <span class="status status-low">
+                                    <span class="risk-low">
                                         LOW
                                     </span>
 
                                 {% endif %}
 
+
                             </td>
+
 
                         </tr>
 
-                    {% endfor %}
+
+                        {% endfor %}
+
 
                     </tbody>
+
 
                 </table>
 
             </div>
 
-        </div>
-
-    </section>
-
-</main>
+        </section>
 
 
-<footer class="footer">
-
-    MediPredict · Medicine Stockout Prevention System
-
-</footer>
+    </main>
 
 
-<script id="medicine-data"
-        type="application/json">
 
-{{ medicines | tojson }}
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
 
-</script>
+    <footer class="analytics-footer">
 
+        MediPredict · Medicine Stockout Prevention System
 
-<script>
-
-const medicines = JSON.parse(
-    document.getElementById("medicine-data").textContent
-);
+    </footer>
 
 
-/* -----------------------------
-   Medicine Names
------------------------------ */
 
-const labels = medicines.map(
-    medicine => medicine.name
-);
+    <!-- =====================================================
+         MEDICINE DATA
+    ===================================================== -->
 
+    <script id="medicine-data"
+            type="application/json">
 
-/* -----------------------------
-   Current Stock
------------------------------ */
+        {{ medicines | tojson }}
 
-const stockData = medicines.map(
-    medicine => medicine.current_stock
-);
+    </script>
 
 
-new Chart(
-    document.getElementById("stockChart"),
-    {
-        type: "bar",
 
-        data: {
-            labels: labels,
+    <script>
 
-            datasets: [
-                {
-                    label: "Current Stock",
+        /* =================================================
+           READ MEDICINE DATA
+        ================================================= */
 
-                    data: stockData
-                }
-            ]
-        },
-
-        options: {
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    }
-);
+        const medicines = JSON.parse(
+            document.getElementById(
+                "medicine-data"
+            ).textContent
+        );
 
 
-/* -----------------------------
-   Predicted Demand
------------------------------ */
+        /* =================================================
+           MEDICINE NAMES
+        ================================================= */
 
-const demandData = medicines.map(
-    medicine => medicine.average_usage
-);
-
-
-new Chart(
-    document.getElementById("demandChart"),
-    {
-        type: "bar",
-
-        data: {
-            labels: labels,
-
-            datasets: [
-                {
-                    label: "Predicted Daily Demand",
-
-                    data: demandData
-                }
-            ]
-        },
-
-        options: {
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    }
-);
+        const labels = medicines.map(
+            medicine => medicine.name
+        );
 
 
-/* -----------------------------
-   Risk Distribution
------------------------------ */
+        /* =================================================
+           CURRENT STOCK DATA
+        ================================================= */
 
-const highRisk = medicines.filter(
-    medicine => medicine.risk === "HIGH"
-).length;
-
-
-const mediumRisk = medicines.filter(
-    medicine => medicine.risk === "MEDIUM"
-).length;
+        const stockData = medicines.map(
+            medicine => Number(
+                medicine.current_stock
+            )
+        );
 
 
-const lowRisk = medicines.filter(
-    medicine => medicine.risk === "LOW"
-).length;
+        /* =================================================
+           CURRENT STOCK CHART
+        ================================================= */
 
+        new Chart(
 
-new Chart(
-    document.getElementById("riskChart"),
-    {
-        type: "doughnut",
+            document.getElementById(
+                "stockChart"
+            ),
 
-        data: {
+            {
 
-            labels: [
-                "High Risk",
-                "Medium Risk",
-                "Low Risk"
-            ],
+                type: "bar",
 
-            datasets: [
-                {
-                    data: [
-                        highRisk,
-                        mediumRisk,
-                        lowRisk
+                data: {
+
+                    labels: labels,
+
+                    datasets: [
+
+                        {
+
+                            label: "Current Stock",
+
+                            data: stockData
+
+                        }
+
                     ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            title: {
+
+                                display: true,
+
+                                text: "Units"
+
+                            }
+
+                        },
+
+                        x: {
+
+                            ticks: {
+
+                                maxRotation: 45,
+
+                                minRotation: 45
+
+                            }
+
+                        }
+
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    }
+
                 }
-            ]
 
-        },
+            }
 
-        options: {
-            responsive: true,
+        );
 
-            maintainAspectRatio: false
-        }
-    }
-);
 
-</script>
+
+        /* =================================================
+           PREDICTED DEMAND DATA
+        ================================================= */
+
+        /*
+         * IMPORTANT:
+         *
+         * app.py creates:
+         *
+         * predicted_demand
+         *
+         * Therefore we use predicted_demand here.
+         *
+         * We do NOT use average_usage.
+         */
+
+        const demandData = medicines.map(
+
+            medicine => Number(
+                medicine.predicted_demand
+            )
+
+        );
+
+
+        /* =================================================
+           PREDICTED DEMAND CHART
+        ================================================= */
+
+        new Chart(
+
+            document.getElementById(
+                "demandChart"
+            ),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: labels,
+
+                    datasets: [
+
+                        {
+
+                            label: "Predicted Daily Demand",
+
+                            data: demandData
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            title: {
+
+                                display: true,
+
+                                text: "Units / Day"
+
+                            }
+
+                        },
+
+                        x: {
+
+                            ticks: {
+
+                                maxRotation: 45,
+
+                                minRotation: 45
+
+                            }
+
+                        }
+
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+
+        /* =================================================
+           RISK COUNTS
+        ================================================= */
+
+        const highRisk = medicines.filter(
+
+            medicine =>
+                medicine.risk === "HIGH"
+
+        ).length;
+
+
+        const mediumRisk = medicines.filter(
+
+            medicine =>
+                medicine.risk === "MEDIUM"
+
+        ).length;
+
+
+        const lowRisk = medicines.filter(
+
+            medicine =>
+                medicine.risk === "LOW"
+
+        ).length;
+
+
+
+        /* =================================================
+           RISK DISTRIBUTION CHART
+        ================================================= */
+
+        new Chart(
+
+            document.getElementById(
+                "riskChart"
+            ),
+
+            {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels: [
+
+                        "High Risk",
+                        "Medium Risk",
+                        "Low Risk"
+
+                    ],
+
+
+                    datasets: [
+
+                        {
+
+                            data: [
+
+                                highRisk,
+                                mediumRisk,
+                                lowRisk
+
+                            ]
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false
+
+                }
+
+            }
+
+        );
+
+    </script>
+
 
 </body>
 

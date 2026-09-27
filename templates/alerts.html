@@ -13,168 +13,290 @@
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
 
+    <style>
+
+        /* =====================================================
+           ALERTS PAGE
+        ===================================================== */
+
+        .alert-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            margin-bottom: 24px;
+        }
+
+
+        .alert-card-header {
+            padding: 22px 24px 12px;
+        }
+
+
+        .alert-card-title {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+            color: #172554;
+        }
+
+
+        .alert-card-subtitle {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        .alert-list {
+            padding: 0 24px 24px;
+        }
+
+
+        .alert-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            padding: 24px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+
+
+        .alert-item-left {
+            flex: 1;
+        }
+
+
+        .alert-item-right {
+            min-width: 150px;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+
+
+        .alert-item-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #172554;
+            margin-bottom: 10px;
+        }
+
+
+        .alert-item-description {
+            color: #475569;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+
+        .alert-item-description strong {
+            color: #172554;
+        }
+
+
+        .status {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        .status-high {
+            color: #dc2626;
+            background: #fee2e2;
+        }
+
+
+        .status-medium {
+            color: #d97706;
+            background: #fef3c7;
+        }
+
+
+        .status-low {
+            color: #16a34a;
+            background: #dcfce7;
+        }
+
+
+        .explanation {
+            margin-top: 18px;
+            padding: 16px;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+
+        .explanation-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+
+        .explanation ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+
+        .explanation li {
+            margin: 5px 0;
+            color: #475569;
+            font-size: 13px;
+        }
+
+
+        .forecast-label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+
+
+        .forecast-number {
+            font-size: 30px;
+            font-weight: 800;
+            color: #172554;
+            margin: 6px 0;
+        }
+
+
+        .info-box {
+            padding: 22px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+
+        .info-box-title {
+            font-weight: 700;
+            color: #172554;
+            margin-bottom: 5px;
+        }
+
+
+        .info-box p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           EXPLANATION CARDS
+        ===================================================== */
+
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 0 24px 24px;
+        }
+
+
+        .explanation-card {
+            padding: 22px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+
+        .explanation-card h3 {
+            margin: 0 0 10px;
+            color: #172554;
+            font-size: 16px;
+        }
+
+
+        .explanation-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .alerts-footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .alert-item {
+                flex-direction: column;
+            }
+
+
+            .alert-item-right {
+                width: auto;
+            }
+
+
+            .explanation-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
 <body>
 
-<header class="topbar">
 
-    <div class="brand">
+    <!-- =====================================================
+         NAVBAR
+    ===================================================== -->
 
-        <div class="brand-icon">
-            M
-        </div>
+    <nav class="navbar">
 
-        <div>
 
-            <div class="brand-name">
-                MediPredict
+        <div class="brand">
+
+            <div class="brand-icon">
+                M
             </div>
 
-            <span class="brand-subtitle">
-                Medicine Inventory & Stockout Prevention
-            </span>
-
-        </div>
-
-    </div>
-
-
-    <nav class="nav">
-
-        <a href="/">
-            Dashboard
-        </a>
-
-        <a href="/medicines">
-            Inventory
-        </a>
-
-        <a href="/predictions">
-            Predictions
-        </a>
-
-        <a href="/analytics">
-            Analytics
-        </a>
-
-        <a href="/alerts" class="active">
-            Alerts
-        </a>
-
-    </nav>
-
-</header>
-
-
-<main class="page">
-
-    <div class="page-header">
-
-        <div>
-
-            <h1 class="page-title">
-                Stockout Alerts
-            </h1>
-
-            <p class="page-description">
-                Medicines that may require replenishment or monitoring.
-            </p>
-
-        </div>
-
-    </div>
-
-
-    <!-- SUMMARY -->
-
-    <div class="summary-grid">
-
-        <div class="summary-card critical">
-
-            <div class="summary-label">
-                Critical
-            </div>
-
-            <div class="summary-value">
-                {{ high_risk }}
-            </div>
-
-            <div class="summary-note">
-                Immediate action
-            </div>
-
-        </div>
-
-
-        <div class="summary-card warning">
-
-            <div class="summary-label">
-                Medium Risk
-            </div>
-
-            <div class="summary-value">
-                {{ medium_risk }}
-            </div>
-
-            <div class="summary-note">
-                Monitor closely
-            </div>
-
-        </div>
-
-
-        <div class="summary-card normal">
-
-            <div class="summary-label">
-                Low Risk
-            </div>
-
-            <div class="summary-value">
-                {{ low_risk }}
-            </div>
-
-            <div class="summary-note">
-                No immediate action
-            </div>
-
-        </div>
-
-
-        <div class="summary-card primary">
-
-            <div class="summary-label">
-                Total Medicines
-            </div>
-
-            <div class="summary-value">
-                {{ total_medicines }}
-            </div>
-
-            <div class="summary-note">
-                Under monitoring
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- CRITICAL -->
-
-    <section class="section">
-
-        <div class="section-header">
 
             <div>
 
-                <div class="section-title">
-                    Critical Alerts
+                <div class="brand-name">
+                    MediPredict
                 </div>
 
-                <div class="section-subtitle">
-                    Medicines that may run out before supplier delivery
+
+                <div class="brand-subtitle">
+                    Medicine Inventory &amp; Stockout Prevention
                 </div>
 
             </div>
@@ -182,25 +304,237 @@
         </div>
 
 
-        <div class="section-body">
+        <div class="nav-links">
+
+
+            <a href="/">
+                Dashboard
+            </a>
+
+
+            <a href="/medicines">
+                Inventory
+            </a>
+
+
+            <a href="/predictions">
+                Predictions
+            </a>
+
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+
+            <a href="/alerts"
+               class="active">
+                Alerts
+            </a>
+
+
+            <a href="/logout"
+               class="logout-btn">
+                Logout
+            </a>
+
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="main-container">
+
+
+        <!-- PAGE HEADER -->
+
+        <div class="page-header">
+
+            <div>
+
+                <h1>
+                    Stockout Alerts
+                </h1>
+
+
+                <p>
+                    Medicines that may require replenishment or monitoring.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
+
+        <div class="summary-grid">
+
+
+            <!-- HIGH RISK -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Critical
+                </div>
+
+
+                <div class="summary-number high-risk-number">
+
+                    {{ medicines
+                       | selectattr("risk", "equalto", "HIGH")
+                       | list
+                       | length }}
+
+                </div>
+
+
+                <div class="summary-description high-risk-text">
+                    Immediate action
+                </div>
+
+            </div>
+
+
+
+            <!-- MEDIUM RISK -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Medium Risk
+                </div>
+
+
+                <div class="summary-number medium-risk-number">
+
+                    {{ medicines
+                       | selectattr("risk", "equalto", "MEDIUM")
+                       | list
+                       | length }}
+
+                </div>
+
+
+                <div class="summary-description medium-risk-text">
+                    Monitor closely
+                </div>
+
+            </div>
+
+
+
+            <!-- LOW RISK -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Low Risk
+                </div>
+
+
+                <div class="summary-number low-risk-number">
+
+                    {{ medicines
+                       | selectattr("risk", "equalto", "LOW")
+                       | list
+                       | length }}
+
+                </div>
+
+
+                <div class="summary-description low-risk-text">
+                    No immediate action
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL -->
+
+            <div class="summary-card">
+
+                <div class="summary-label">
+                    Total Medicines
+                </div>
+
+
+                <div class="summary-number">
+
+                    {{ medicines | length }}
+
+                </div>
+
+
+                <div class="summary-description">
+                    Under monitoring
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CRITICAL ALERTS
+        ================================================== -->
+
+        <section class="alert-card">
+
+
+            <div class="alert-card-header">
+
+                <h2 class="alert-card-title">
+                    Critical Alerts
+                </h2>
+
+
+                <p class="alert-card-subtitle">
+                    Medicines that may run out before supplier delivery
+                </p>
+
+            </div>
+
 
             <div class="alert-list">
 
-            {% set found_high = false %}
 
-            {% for medicine in medicines|sort(attribute='days_remaining') %}
+                {% set high_count = medicines
+                    | selectattr("risk", "equalto", "HIGH")
+                    | list
+                    | length %}
 
-                {% if medicine.risk == "HIGH" %}
 
-                    {% set found_high = true %}
+                {% if high_count > 0 %}
+
+
+                    {% for medicine in medicines
+                       | selectattr("risk", "equalto", "HIGH")
+                       | sort(attribute="days_remaining") %}
+
 
                     <div class="alert-item">
 
+
                         <div class="alert-item-left">
+
 
                             <div class="alert-item-title">
 
                                 {{ medicine.name }}
+
 
                                 <span class="status status-high">
                                     HIGH
@@ -209,19 +543,27 @@
                             </div>
 
 
+
                             <div class="alert-item-description">
 
                                 Current stock:
+
                                 <strong>
                                     {{ medicine.current_stock }} units
                                 </strong>
 
+
                                 · Predicted demand:
+
                                 <strong>
-                                    {{ medicine.average_usage }}/day
+                                    {{ "%.1f"|format(
+                                        medicine.predicted_demand
+                                    ) }}/day
                                 </strong>
 
+
                                 · Expected stock coverage:
+
                                 <strong>
                                     {{ medicine.days_remaining }} days
                                 </strong>
@@ -229,23 +571,32 @@
                             </div>
 
 
+
                             <div class="explanation">
+
 
                                 <div class="explanation-title">
                                     Recommended Action
                                 </div>
 
+
                                 <ul>
 
                                     <li>
                                         Supplier lead time:
-                                        {{ medicine.lead_time }} days
+                                        <strong>
+                                            {{ medicine.lead_time }} days
+                                        </strong>
                                     </li>
+
 
                                     <li>
                                         Recommended reorder:
-                                        {{ medicine.reorder_quantity }} units
+                                        <strong>
+                                            {{ medicine.reorder_quantity }} units
+                                        </strong>
                                     </li>
+
 
                                     <li>
                                         Stock may run out before delivery.
@@ -253,97 +604,116 @@
 
                                 </ul>
 
+
                             </div>
+
 
                         </div>
 
 
+
                         <div class="alert-item-right">
+
 
                             <div class="forecast-label">
                                 STOCKOUT ESTIMATE
                             </div>
 
+
                             <div class="forecast-number">
                                 {{ medicine.days_remaining }}
                             </div>
+
 
                             <div class="forecast-label">
                                 days remaining
                             </div>
 
+
                         </div>
 
+
                     </div>
+
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <div class="info-box">
+
+                        <div class="info-box-title">
+                            No critical alerts
+                        </div>
+
+
+                        <p>
+                            No medicines are currently predicted
+                            to stock out before supplier delivery.
+                        </p>
+
+                    </div>
+
 
                 {% endif %}
 
-            {% endfor %}
-
-
-            {% if not found_high %}
-
-                <div class="info-box">
-
-                    <div class="info-box-title">
-                        No critical alerts
-                    </div>
-
-                    <p>
-                        No medicines are currently predicted to stock out before supplier delivery.
-                    </p>
-
-                </div>
-
-            {% endif %}
 
             </div>
 
-        </div>
-
-    </section>
+        </section>
 
 
-    <!-- MEDIUM -->
 
-    <section class="section">
+        <!-- =================================================
+             MEDIUM RISK
+        ================================================== -->
 
-        <div class="section-header">
+        <section class="alert-card">
 
-            <div>
 
-                <div class="section-title">
+            <div class="alert-card-header">
+
+                <h2 class="alert-card-title">
                     Monitoring Required
-                </div>
+                </h2>
 
-                <div class="section-subtitle">
+
+                <p class="alert-card-subtitle">
                     Medicines approaching their reorder window
-                </div>
+                </p>
 
             </div>
 
-        </div>
-
-
-        <div class="section-body">
 
             <div class="alert-list">
 
-            {% set found_medium = false %}
 
-            {% for medicine in medicines|sort(attribute='days_remaining') %}
+                {% set medium_count = medicines
+                    | selectattr("risk", "equalto", "MEDIUM")
+                    | list
+                    | length %}
 
-                {% if medicine.risk == "MEDIUM" %}
 
-                    {% set found_medium = true %}
+                {% if medium_count > 0 %}
+
+
+                    {% for medicine in medicines
+                       | selectattr("risk", "equalto", "MEDIUM")
+                       | sort(attribute="days_remaining") %}
+
 
                     <div class="alert-item">
 
+
                         <div class="alert-item-left">
+
 
                             <div class="alert-item-title">
 
                                 {{ medicine.name }}
+
 
                                 <span class="status status-medium">
                                     MEDIUM
@@ -352,138 +722,327 @@
                             </div>
 
 
+
                             <div class="alert-item-description">
 
                                 Stock coverage:
+
                                 <strong>
                                     {{ medicine.days_remaining }} days
                                 </strong>
 
+
+                                · Predicted demand:
+
+                                <strong>
+                                    {{ "%.1f"|format(
+                                        medicine.predicted_demand
+                                    ) }}/day
+                                </strong>
+
+
                                 · Supplier lead time:
+
                                 <strong>
                                     {{ medicine.lead_time }} days
                                 </strong>
 
                             </div>
 
+
                         </div>
 
 
+
                         <div class="alert-item-right">
+
 
                             <div class="forecast-label">
                                 REORDER
                             </div>
 
+
                             <div class="forecast-number">
                                 {{ medicine.reorder_quantity }}
                             </div>
+
 
                             <div class="forecast-label">
                                 units recommended
                             </div>
 
+
                         </div>
 
+
                     </div>
+
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <div class="info-box">
+
+                        <div class="info-box-title">
+                            No medium-risk medicines
+                        </div>
+
+
+                        <p>
+                            No additional medicines currently
+                            require close monitoring.
+                        </p>
+
+                    </div>
+
 
                 {% endif %}
 
-            {% endfor %}
+
+            </div>
+
+        </section>
 
 
-            {% if not found_medium %}
 
-                <div class="info-box">
+        <!-- =================================================
+             LOW RISK
+        ================================================== -->
 
-                    <div class="info-box-title">
-                        No medium-risk medicines
+        <section class="alert-card">
+
+
+            <div class="alert-card-header">
+
+                <h2 class="alert-card-title">
+                    Normal Inventory
+                </h2>
+
+
+                <p class="alert-card-subtitle">
+                    Medicines with sufficient stock coverage
+                </p>
+
+            </div>
+
+
+            <div class="alert-list">
+
+
+                {% set low_count = medicines
+                    | selectattr("risk", "equalto", "LOW")
+                    | list
+                    | length %}
+
+
+                {% if low_count > 0 %}
+
+
+                    {% for medicine in medicines
+                       | selectattr("risk", "equalto", "LOW")
+                       | sort(attribute="days_remaining") %}
+
+
+                    <div class="alert-item">
+
+
+                        <div class="alert-item-left">
+
+
+                            <div class="alert-item-title">
+
+                                {{ medicine.name }}
+
+
+                                <span class="status status-low">
+                                    LOW RISK
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="alert-item-description">
+
+                                Current stock:
+
+                                <strong>
+                                    {{ medicine.current_stock }} units
+                                </strong>
+
+
+                                · Predicted demand:
+
+                                <strong>
+                                    {{ "%.1f"|format(
+                                        medicine.predicted_demand
+                                    ) }}/day
+                                </strong>
+
+
+                                · Stock coverage:
+
+                                <strong>
+                                    {{ medicine.days_remaining }} days
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="alert-item-right">
+
+
+                            <div class="forecast-label">
+                                STOCK COVERAGE
+                            </div>
+
+
+                            <div class="forecast-number">
+                                {{ medicine.days_remaining }}
+                            </div>
+
+
+                            <div class="forecast-label">
+                                days remaining
+                            </div>
+
+
+                        </div>
+
+
                     </div>
 
-                    <p>
-                        No additional medicines currently require close monitoring.
-                    </p>
 
-                </div>
+                    {% endfor %}
 
-            {% endif %}
+
+                {% else %}
+
+
+                    <div class="info-box">
+
+                        <div class="info-box-title">
+                            No low-risk medicines
+                        </div>
+
+
+                        <p>
+                            There are currently no medicines
+                            classified as low risk.
+                        </p>
+
+                    </div>
+
+
+                {% endif %}
+
 
             </div>
 
-        </div>
-
-    </section>
+        </section>
 
 
-    <!-- EXPLANATION -->
 
-    <section class="section">
+        <!-- =================================================
+             HOW ALERTS ARE GENERATED
+        ================================================== -->
 
-        <div class="section-header">
+        <section class="alert-card">
 
-            <div class="section-title">
-                How Alerts Are Generated
+
+            <div class="alert-card-header">
+
+                <h2 class="alert-card-title">
+                    How Alerts Are Generated
+                </h2>
+
             </div>
 
-        </div>
+
+            <div class="explanation-grid">
 
 
-        <div class="section-body">
+                <!-- DEMAND -->
 
-            <div class="prediction-grid">
-
-                <div class="prediction-card">
+                <div class="explanation-card">
 
                     <h3>
                         Predicted Demand
                     </h3>
 
-                    <p class="alert-text">
-                        The ML model estimates expected daily consumption.
+
+                    <p>
+                        The ML model estimates the expected
+                        daily consumption of each medicine.
                     </p>
 
                 </div>
 
 
-                <div class="prediction-card">
+
+                <!-- STOCK COVERAGE -->
+
+                <div class="explanation-card">
 
                     <h3>
                         Stock Coverage
                     </h3>
 
-                    <p class="alert-text">
-                        Current stock is divided by predicted daily demand to estimate remaining days.
+
+                    <p>
+                        Current stock is divided by predicted
+                        daily demand to estimate how many days
+                        the available stock can last.
                     </p>
 
                 </div>
 
 
-                <div class="prediction-card">
+
+                <!-- LEAD TIME -->
+
+                <div class="explanation-card">
 
                     <h3>
                         Supplier Lead Time
                     </h3>
 
-                    <p class="alert-text">
-                        The system compares stock coverage with the expected supplier delivery time.
+
+                    <p>
+                        The system compares stock coverage
+                        with the expected supplier delivery
+                        time to identify possible stockouts.
                     </p>
 
                 </div>
 
+
             </div>
 
-        </div>
-
-    </section>
-
-</main>
+        </section>
 
 
-<footer class="footer">
+    </main>
 
-    MediPredict · Medicine Stockout Prevention System
 
-</footer>
+
+    <!-- =====================================================
+         FOOTER
+    ===================================================== -->
+
+    <footer class="alerts-footer">
+
+        MediPredict · Medicine Stockout Prevention System
+
+    </footer>
+
 
 </body>
 
