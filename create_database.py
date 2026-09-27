@@ -36,3 +36,15 @@ connection.close()
 
 
 print("Database created successfully!")
+connection = get_connection()
+cursor = connection.cursor()
+
+cursor.execute("""
+CREATE INDEX IF NOT EXISTS idx_usage_medicine_date
+ON usage_history (medicine_id, usage_date)
+""")
+
+connection.commit()
+connection.close()
+
+print("Database index created successfully!")
