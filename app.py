@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from database import get_connection
 from ml.predict_demand import predict_medicine_demand
 
@@ -264,6 +264,53 @@ def medicines_page():
 
 
 # ============================================================
+# ADD MEDICINE
+# ============================================================
+
+@app.route("/add-medicine", methods=["GET", "POST"])
+def add_medicine():
+
+    if request.method == "POST":
+
+        name = request.form["name"]
+        current_stock = request.form["current_stock"]
+        minimum_stock = request.form["minimum_stock"]
+        supplier = request.form["supplier"]
+        lead_time = request.form["lead_time"]
+        daily_usage = request.form["daily_usage"]
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            INSERT INTO medicines
+            (
+                name,
+                current_stock,
+                minimum_stock,
+                supplier,
+                lead_time,
+                daily_usage
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            name,
+            current_stock,
+            minimum_stock,
+            supplier,
+            lead_time,
+            daily_usage
+        ))
+
+        connection.commit()
+        connection.close()
+
+        return redirect("/medicines")
+
+    return render_template("add_medicine.html")
+
+
+# ============================================================
 # PREDICTIONS PAGE
 # ============================================================
 
@@ -444,12 +491,11 @@ def api_predict(medicine_id):
 
 # ============================================================
 # RUN APPLICATION
-# GOOGLE CLOUD RUN READY
 # ============================================================
 
 if __name__ == "__main__":
 
-    # Cloud Run provides the PORT environment variable.
+    # Render provides the PORT environment variable.
     # Locally, it will use port 5000.
 
     port = int(

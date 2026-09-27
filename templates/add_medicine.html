@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add Medicine | MediPredict</title>
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f8fa;
+            color: #243b53;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #dfe7ec;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 0 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+
+            background: #176b87;
+            color: white;
+
+            border-radius: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+
+        .brand-name {
+            color: #17324d;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+
+        .brand-subtitle {
+            margin-top: 2px;
+            color: #718096;
+            font-size: 11px;
+        }
+
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+
+        .nav-links a {
+            padding: 9px 14px;
+
+            color: #52677a;
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            border-radius: 6px;
+
+            transition: 0.2s;
+        }
+
+
+        .nav-links a:hover {
+            background: #f0f6f8;
+            color: #176b87;
+        }
+
+
+        .nav-links a.active {
+            background: #eaf5f8;
+            color: #176b87;
+        }
+
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page {
+            max-width: 1050px;
+            margin: 0 auto;
+
+            padding: 34px 30px 60px;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ===================================================== */
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 24px;
+        }
+
+
+        .page-title h1 {
+            margin: 0 0 6px;
+
+            color: #17324d;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+
+        .page-title p {
+            margin: 0;
+
+            color: #718096;
+            font-size: 14px;
+        }
+
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 10px 15px;
+
+            border: 1px solid #d4e0e6;
+            border-radius: 6px;
+
+            background: white;
+            color: #176b87;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+
+        .back-button:hover {
+            background: #f3f9fb;
+            border-color: #b9d5df;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ===================================================== */
+
+        .form-card {
+            background: white;
+
+            border: 1px solid #dce6eb;
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 12px rgba(23, 50, 77, 0.06);
+
+            overflow: hidden;
+        }
+
+
+        /* =====================================================
+           CARD HEADER
+        ===================================================== */
+
+        .card-header {
+            padding: 22px 26px;
+
+            border-bottom: 1px solid #e5edf1;
+
+            background: #fbfcfd;
+        }
+
+
+        .card-header h2 {
+            margin: 0 0 5px;
+
+            color: #17324d;
+            font-size: 18px;
+        }
+
+
+        .card-header p {
+            margin: 0;
+
+            color: #718096;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-body {
+            padding: 28px;
+        }
+
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin-bottom: 18px;
+
+            color: #176b87;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+
+        .section-number {
+            width: 24px;
+            height: 24px;
+
+            border-radius: 50%;
+
+            background: #eaf5f8;
+            color: #176b87;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px 24px;
+        }
+
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        .field label {
+            margin-bottom: 7px;
+
+            color: #334e68;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        .required {
+            color: #d64545;
+            margin-left: 2px;
+        }
+
+
+        .field input {
+            width: 100%;
+
+            height: 43px;
+
+            padding: 0 12px;
+
+            border: 1px solid #cbd7df;
+            border-radius: 6px;
+
+            background: #ffffff;
+
+            color: #243b53;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+        }
+
+
+        .field input:hover {
+            border-color: #aebfc9;
+        }
+
+
+        .field input:focus {
+            border-color: #176b87;
+
+            box-shadow:
+                0 0 0 3px rgba(23, 107, 135, 0.08);
+        }
+
+
+        .field input::placeholder {
+            color: #a0aec0;
+        }
+
+
+        .help-text {
+            margin-top: 6px;
+
+            color: #8292a2;
+
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+
+        /* =====================================================
+           DIVIDER
+        ===================================================== */
+
+        .form-divider {
+            height: 1px;
+
+            margin: 30px 0;
+
+            background: #e6edf1;
+        }
+
+
+        /* =====================================================
+           INFO BOX
+        ===================================================== */
+
+        .info-box {
+            display: flex;
+            gap: 11px;
+
+            padding: 14px 16px;
+
+            margin-top: 26px;
+
+            background: #f2f8fa;
+
+            border: 1px solid #d8eaf0;
+
+            border-radius: 7px;
+        }
+
+
+        .info-icon {
+            width: 22px;
+            height: 22px;
+
+            flex-shrink: 0;
+
+            border-radius: 50%;
+
+            background: #176b87;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        .info-content strong {
+            display: block;
+
+            margin-bottom: 3px;
+
+            color: #315b6b;
+
+            font-size: 12px;
+        }
+
+
+        .info-content p {
+            margin: 0;
+
+            color: #66808c;
+
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 28px;
+            padding-top: 20px;
+
+            border-top: 1px solid #e5edf1;
+        }
+
+
+        .cancel-button {
+            height: 42px;
+
+            padding: 0 19px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #cbd7df;
+            border-radius: 6px;
+
+            background: white;
+            color: #52677a;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+
+        .cancel-button:hover {
+            background: #f7fafb;
+        }
+
+
+        .submit-button {
+            height: 42px;
+
+            padding: 0 21px;
+
+            border: none;
+            border-radius: 6px;
+
+            background: #176b87;
+            color: white;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+
+        .submit-button:hover {
+            background: #12566d;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 800px) {
+
+            .nav-container {
+                padding: 0 18px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .page {
+                padding: 25px 18px 40px;
+            }
+
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 500px) {
+
+            .form-body {
+                padding: 20px;
+            }
+
+            .card-header {
+                padding: 20px;
+            }
+
+            .form-footer {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .cancel-button,
+            .submit-button {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+====================================================== -->
+
+<nav class="navbar">
+
+    <div class="nav-container">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                M
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    MediPredict
+                </div>
+
+                <div class="brand-subtitle">
+                    Medicine Inventory & Stockout Prevention
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LINKS -->
+
+        <div class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/medicines" class="active">
+                Inventory
+            </a>
+
+            <a href="/predictions">
+                Predictions
+            </a>
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/alerts">
+                Alerts
+            </a>
+
+        </div>
+
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     PAGE
+====================================================== -->
+
+<main class="page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+
+        <div class="page-title">
+
+            <h1>
+                Add Medicine
+            </h1>
+
+            <p>
+                Add a new medicine to the hospital inventory.
+            </p>
+
+        </div>
+
+
+        <a href="/medicines"
+           class="back-button">
+
+            ← Back to Inventory
+
+        </a>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FORM CARD
+    ====================================================== -->
+
+    <div class="form-card">
+
+
+        <!-- CARD HEADER -->
+
+        <div class="card-header">
+
+            <h2>
+                Medicine Information
+            </h2>
+
+            <p>
+                Enter the details below to start monitoring this medicine.
+            </p>
+
+        </div>
+
+
+
+        <!-- FORM BODY -->
+
+        <div class="form-body">
+
+
+            <form method="POST">
+
+
+                <!-- =================================================
+                     SECTION 1
+                ================================================== -->
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        1
+                    </span>
+
+                    Medicine Details
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- MEDICINE NAME -->
+
+                    <div class="field">
+
+                        <label>
+
+                            Medicine Name
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="e.g. Vitamin C"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Enter the medicine's generic or product name.
+                        </span>
+
+                    </div>
+
+
+                    <!-- SUPPLIER -->
+
+                    <div class="field">
+
+                        <label>
+
+                            Supplier
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="text"
+                            name="supplier"
+                            placeholder="e.g. ABC Pharma"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Name of the medicine supplier.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- DIVIDER -->
+
+                <div class="form-divider"></div>
+
+
+
+                <!-- =================================================
+                     SECTION 2
+                ================================================== -->
+
+                <div class="section-title">
+
+                    <span class="section-number">
+                        2
+                    </span>
+
+                    Inventory Information
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- CURRENT STOCK -->
+
+                    <div class="field">
+
+                        <label>
+
+                            Current Stock
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="current_stock"
+                            min="0"
+                            placeholder="e.g. 500"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Number of units currently available.
+                        </span>
+
+                    </div>
+
+
+                    <!-- MINIMUM STOCK -->
+
+                    <div class="field">
+
+                        <label>
+
+                            Minimum Stock Level
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="minimum_stock"
+                            min="0"
+                            placeholder="e.g. 100"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Minimum quantity that should be maintained.
+                        </span>
+
+                    </div>
+
+
+                    <!-- DAILY USAGE -->
+
+                    <div class="field">
+
+                        <label>
+
+                            Average Daily Usage
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="daily_usage"
+                            min="0"
+                            step="0.1"
+                            placeholder="e.g. 25"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Approximate number of units used each day.
+                        </span>
+
+                    </div>
+
+
+                    <!-- LEAD TIME -->
+
+                    <div class="field">
+
+                        <label>
+
+                            Supplier Lead Time
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <input
+                            type="number"
+                            name="lead_time"
+                            min="1"
+                            placeholder="e.g. 5"
+                            required
+                        >
+
+                        <span class="help-text">
+                            Number of days required for supplier delivery.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     INFO
+                ================================================== -->
+
+                <div class="info-box">
+
+
+                    <div class="info-icon">
+                        i
+                    </div>
+
+
+                    <div class="info-content">
+
+                        <strong>
+                            How MediPredict uses this information
+                        </strong>
+
+                        <p>
+                            Stock level, daily usage and supplier lead time
+                            are used to calculate predicted demand, days
+                            remaining, stockout risk and reorder quantity.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
+
+                <div class="form-footer">
+
+
+                    <a href="/medicines"
+                       class="cancel-button">
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="submit-button">
+
+                        + Add Medicine
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>
